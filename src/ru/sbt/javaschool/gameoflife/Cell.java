@@ -18,7 +18,7 @@ class Cell {
     private CellState state;
 
     public Cell() {
-        this.state = CellState.NONE;
+        this(CellState.NONE);
     }
 
     public Cell(CellState state) {
