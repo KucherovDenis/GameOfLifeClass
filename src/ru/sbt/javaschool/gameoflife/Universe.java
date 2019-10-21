@@ -27,17 +27,27 @@ class Universe {
         return sizeY;
     }
 
-    private final Cell[][] cells;
+    private Cell[][] currentCells;
+
+    private Cell[][] nextCells;
+
 
     public Universe(int sizeX, int sizeY) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
 
-        cells = new Cell[sizeX][sizeY];
+        currentCells = createCells();
+        nextCells = createCells();
+        currentGeneration = 1;
+    }
+
+    private Cell[][] createCells() {
+        Cell[][] result = new Cell[sizeX][sizeY];
         for (int x = 0; x < sizeX; x++)
             for (int y = 0; y < sizeY; y++)
-                cells[x][y] = new Cell();
-        currentGeneration = 1;
+                result[x][y] = new Cell();
+
+        return result;
     }
 
     public static Universe copyOf(Universe other) {
@@ -49,23 +59,44 @@ class Universe {
     }
 
     public void initCell(int x, int y, CellState state) {
-        cells[x][y].setState(state);
+        currentCells[x][y].setState(state);
     }
 
     public Cell getCell(int x, int y) {
-        return cells[x][y];
+        return currentCells[x][y];
     }
 
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
-        for (Cell[] cs : cells) {
+        for (Cell[] cs : currentCells) {
             out.append(SEPARATOR);
             for (Cell cell : cs)
-                out.append(cell.toString()).append(SEPARATOR);
-            out.append("\n");
+                out.append(cell).append(SEPARATOR);
+
+            out.append('\n');
         }
         return out.toString();
+    }
+
+    private int countNeighbors(int x, int y) {
+        int result = 0;
+
+        for (int[] d : offsets) {
+            int dx = x + d[0];
+            int dy = y + d[1];
+
+            if (dx < 0) dx = sizeX - 1;
+            else if (dx >= sizeX) dx = 0;
+
+            if (dy < 0) dy = sizeY - 1;
+            else if (dy >= sizeY) dy = 0;
+
+            if (currentCells[dx][dy].getState() == CellState.ALIVE)
+                result++;
+        }
+
+        return result;
     }
 
     public void nextGeneration() {
@@ -73,25 +104,12 @@ class Universe {
 
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
-                int countNeighbors = 0;
-
-                for (int[] d : offsets) {
-                    int dx = x + d[0];
-                    int dy = y + d[1];
-
-                    if (dx < 0) dx = sizeX - 1;
-                    else if (dx >= sizeX) dx = 0;
-
-                    if (dy < 0) dy = sizeY - 1;
-                    else if (dy >= sizeY) dy = 0;
-
-                    if (cells[dx][dy].getState() == CellState.ALIVE)
-                        countNeighbors++;
-                }
-
-                cells[x][y].addCountNeighbors(countNeighbors);
+                nextCells[x][y].newValue(currentCells[x][y].getState(), countNeighbors(x, y));
             }
         }
+
+        currentCells = nextCells;
+        nextCells = createCells();
     }
 
     public boolean isDead() {
@@ -100,7 +118,7 @@ class Universe {
         end:
         for (int x = 0; x < sizeX; x++)
             for (int y = 0; y < sizeY; y++)
-                if (cells[x][y].getState() != CellState.DEAD) {
+                if (currentCells[x][y].getState() != CellState.DEAD) {
                     result = false;
                     break end;
                 }
@@ -116,13 +134,13 @@ class Universe {
 
         return sizeX == universe.getSizeX() &&
                 sizeY == universe.getSizeY() &&
-                Arrays.deepEquals(cells, universe.cells);
+                Arrays.deepEquals(currentCells, universe.currentCells);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(getSizeX(), getSizeY());
-        result = 31 * result + Arrays.deepHashCode(cells);
+        result = 31 * result + Arrays.deepHashCode(currentCells);
         return result;
     }
 }

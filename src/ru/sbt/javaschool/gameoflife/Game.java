@@ -11,9 +11,16 @@ public class Game {
 
     private final List<Universe> universeList;
 
+    private int countIteration = -1;
+
     public Game(GameDrawer drawer) {
         this.drawer = drawer;
         universeList = new ArrayList<>();
+    }
+
+    public void initialize(GameCreator creator, int countIteration) {
+        universe = creator.getUniverse();
+        this.countIteration = countIteration;
     }
 
     public void initialize(GameCreator creator) {
@@ -22,14 +29,14 @@ public class Game {
 
 
     public void run() {
-        if (universe == null) throw new IllegalArgumentException("Не инициализирована переменная universe.");
+        if (universe == null) throw new NullPointerException("Объект не инициализирован.");
 
         greeting();
-        showUniverse();
+        show();
         do {
             saveUniverse();
             universe.nextGeneration();
-            showUniverse();
+            show();
 
             try {
                 Thread.sleep(100);
@@ -46,10 +53,10 @@ public class Game {
     }
 
     private boolean isEnd() {
-        return universe.isDead() || isLoopReplay();
+        return countIteration == universe.getCurrentGeneration() || universe.isDead() || isReplay();
     }
 
-    private boolean isLoopReplay() {
+    private boolean isReplay() {
         return universeList.contains(universe);
 
     }
@@ -59,7 +66,7 @@ public class Game {
         drawer.draw("The End");
     }
 
-    private void showUniverse() {
+    private void show() {
         drawer.draw(String.format("Generation of the universe №%d: ", universe.getCurrentGeneration()));
         drawer.draw(universe.toString());
     }

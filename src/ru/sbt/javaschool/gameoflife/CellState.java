@@ -1,5 +1,5 @@
 package ru.sbt.javaschool.gameoflife;
 
-enum CellState {
+public enum CellState {
     NONE, ALIVE, DEAD
 }

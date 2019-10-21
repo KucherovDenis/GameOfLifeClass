@@ -2,7 +2,7 @@ package ru.sbt.javaschool.gameoflife;
 
 import java.util.Objects;
 
-class Cell {
+public class Cell {
 
     private static final String STR_ALIVE = "*";
     private static final String STR_DEAD = " ";
@@ -25,9 +25,9 @@ class Cell {
         this.state = state;
     }
 
-    public void addCountNeighbors(int count) {
-        state = count == 3 ? CellState.ALIVE : state;
-        state = ((count < 2) || (count > 3)) ? CellState.DEAD : state;
+    public void newValue(CellState state, int neighbors) {
+        this.state = neighbors == 3 ? CellState.ALIVE : state;
+        this.state = ((neighbors < 2) || (neighbors > 3)) ? CellState.DEAD : this.state;
     }
 
     @Override
