@@ -2,7 +2,7 @@ package ru.sbt.javaschool.gameoflife;
 
 public interface DataBroker {
 
-    int getGeneration();
+    int getGenerationNum();
 
     Cell getCell(int x, int y);
 

@@ -2,20 +2,20 @@ package ru.sbt.javaschool.gameoflife;
 
 import java.util.Objects;
 
-public class DataDrawing implements DataBroker {
+public class Generation implements DataBroker {
 
-    public DataDrawing(int generation, Cell[][] cells) {
-        this.generation = generation;
+    public Generation(int generationNum, Cell[][] cells) {
+        this.generationNum = generationNum;
         this.cells = Objects.requireNonNull(cells);
     }
 
-    private int generation;
+    private final int generationNum;
 
-    private Cell[][] cells;
+    private final Cell[][] cells;
 
     @Override
-    public int getGeneration() {
-        return generation;
+    public int getGenerationNum() {
+        return generationNum;
     }
 
     @Override
