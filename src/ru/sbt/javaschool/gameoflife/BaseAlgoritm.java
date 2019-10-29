@@ -91,7 +91,7 @@ public class BaseAlgoritm implements Algoritm {
     }
 
     private boolean isReplay() {
-        return false;
+        return storage.contains(currentGen);
     }
 
     @Override

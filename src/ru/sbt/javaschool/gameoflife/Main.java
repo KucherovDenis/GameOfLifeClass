@@ -11,7 +11,8 @@ public class Main {
         } else game.initialize(new RandomCreator());*/
         Formatter formatter = new ConsoleFormatter();
         UserInterface view  = new ConsoleUI(formatter);
-        Algoritm algoritm = new BaseAlgoritm(null);
+        Storage storage = new MemoryStorage(new GenerationEquals());
+        Algoritm algoritm = new BaseAlgoritm(storage);
         Game game = new Game(view, algoritm);
         game.run();
     }

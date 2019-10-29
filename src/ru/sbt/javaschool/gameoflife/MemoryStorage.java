@@ -9,11 +9,11 @@ public class MemoryStorage implements Storage {
 
     private List<GenerationBroker> generations;
 
-    private final Comparator<GenerationBroker> comparator;
+    private final Equals<GenerationBroker> equalsImpl;
 
-    public MemoryStorage(Comparator<GenerationBroker> comparator) {
+    public MemoryStorage(Equals<GenerationBroker> equalsImpl) {
         generations = new ArrayList<>();
-        this.comparator = Objects.requireNonNull(comparator);
+        this.equalsImpl = Objects.requireNonNull(equalsImpl);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class MemoryStorage implements Storage {
         end:
         for (GenerationBroker current : generations)
             if (current.getHashCode() == generation.getHashCode()) {
-                result = comparator.compare(current, generation) == 0;
+                result = equalsImpl.isEquals(current, generation);
                 if (result) break end;
             }
 
