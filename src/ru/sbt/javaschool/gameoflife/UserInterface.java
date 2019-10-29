@@ -2,9 +2,9 @@ package ru.sbt.javaschool.gameoflife;
 
 public interface UserInterface {
     void init();
-    void showSalutation(String message);
+    void showMessage(String message);
     GameCreator getCreator();
-    void draw(DataBroker generation);
-    void showEnding(String message);
-    void dispose();
+    void draw(GenerationBroker generation);
+    void close();
+    void showErrorMessage(String message);
 }

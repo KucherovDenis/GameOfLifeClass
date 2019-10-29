@@ -1,80 +1,57 @@
 package ru.sbt.javaschool.gameoflife;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.Objects;
 
 public class Game {
+    private final UserInterface view;
 
-    private final GameDrawer drawer;
+    private final Algoritm algoritm;
 
-    private Universe universe = null;
-
-    private final List<Universe> universeList;
-
-    private int countIteration = -1;
-
-    public Game(GameDrawer drawer) {
-        this.drawer = drawer;
-        universeList = new ArrayList<>();
+    public Game(UserInterface view, Algoritm algoritm) {
+        this.view = Objects.requireNonNull(view);
+        this.algoritm = Objects.requireNonNull(algoritm);
+        this.view.init();
     }
-
-    public void initialize(GameCreator creator, int countIteration) {
-        universe = creator.getUniverse();
-        this.countIteration = countIteration;
-    }
-
-    public void initialize(GameCreator creator) {
-        universe = creator.getUniverse();
-    }
-
 
     public void run() {
-        if (universe == null) throw new NullPointerException("Объект не инициализирован.");
-
         greeting();
-        show();
+
+        GameCreator creator = Objects.requireNonNull(view.getCreator());
+        GenerationBroker generation = null;
+        try {
+            generation = creator.getFirstGeneration();
+            algoritm.initialize(generation);
+        } catch (IOException e) {
+            view.showErrorMessage(e.getMessage());
+            return;
+        }
+
+        show(generation);
         do {
-            saveUniverse();
-            universe.nextGeneration();
-            show();
+            generation = algoritm.nextGeneration();
+            show(generation);
 
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                view.showErrorMessage(e.getMessage());
             }
-        } while (!isEnd());
+        } while (!algoritm.isEnd());
         endGame();
     }
 
     private void greeting() {
-        drawer.draw("Simulation start");
-        drawer.draw("---------------------");
-    }
-
-    private boolean isEnd() {
-        return countIteration == universe.getCurrentGeneration() || universe.isDead() || isReplay();
-    }
-
-    private boolean isReplay() {
-        return universeList.contains(universe);
-
+        view.showMessage("Добро пожаловать в симулюцию игры Жизнь.");
     }
 
     private void endGame() {
-        drawer.draw("---------------------");
-        drawer.draw("The End");
+        view.showMessage("Конец игры");
+        view.close();
     }
 
-    private void show() {
-        drawer.draw(String.format("Generation of the universe №%d: ", universe.getCurrentGeneration()));
-        drawer.draw(universe.toString());
+    private void show(GenerationBroker generation) {
+        view.showMessage(String.format("Поколение №%d: ", generation.getCurrentGeneration()));
+        view.draw(generation);
     }
-
-    private void saveUniverse() {
-        Universe copy = Universe.copyOf(universe);
-        universeList.add(copy);
-    }
-
-
 }

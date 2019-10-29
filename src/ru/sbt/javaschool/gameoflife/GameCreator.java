@@ -1,5 +1,7 @@
 package ru.sbt.javaschool.gameoflife;
 
+import java.io.IOException;
+
 public interface GameCreator {
-    Universe getUniverse();
+    GenerationBroker getFirstGeneration() throws IOException;
 }

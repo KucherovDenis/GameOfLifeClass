@@ -1,12 +1,14 @@
 package ru.sbt.javaschool.gameoflife;
 
-public interface DataBroker {
+public interface GenerationBroker {
 
-    int getGenerationNum();
+    int getCurrentGeneration();
 
     Cell getCell(int x, int y);
 
     int getSizeX();
 
     int getSizeY();
+
+    int getHashCode();
 }

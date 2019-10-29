@@ -3,51 +3,32 @@ package ru.sbt.javaschool.gameoflife;
 import java.util.Arrays;
 import java.util.Objects;
 
-class Universe {
-
-    private static final char SEPARATOR = '|';
+class Universe extends Generation {
 
     private static final int[][] offsets = {{0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}};
-
-    private int currentGeneration;
-
-    public int getCurrentGeneration() {
-        return currentGeneration;
-    }
-
-    private final int sizeX;
-
-    private final int sizeY;
-
-    public int getSizeX() {
-        return sizeX;
-    }
-
-    public int getSizeY() {
-        return sizeY;
-    }
-
-    private Cell[][] currentCells;
 
     private Cell[][] nextCells;
 
 
     public Universe(int sizeX, int sizeY) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
+        super(sizeX, sizeY);
 
-        currentCells = createCells();
         nextCells = createCells();
-        currentGeneration = 1;
     }
 
-    private Cell[][] createCells() {
-        Cell[][] result = new Cell[sizeX][sizeY];
-        for (int x = 0; x < sizeX; x++)
-            for (int y = 0; y < sizeY; y++)
-                result[x][y] = new Cell();
+    public Universe(GenerationBroker generation) {
+        this(generation.getSizeX(), generation.getSizeY());
+        initCells(generation);
+    }
 
-        return result;
+    private void initCells(GenerationBroker generation) {
+        for (int x = 0; x < getSizeX(); x++) {
+            for (int y = 0; y < getSizeY(); y++) {
+                Cell cell = generation.getCell(x, y);
+                if (cell != null)
+                    initCell(x, y, cell.getState());
+            }
+        }
     }
 
     public static Universe copyOf(Universe other) {
@@ -58,27 +39,6 @@ class Universe {
         return copy;
     }
 
-    public void initCell(int x, int y, CellState state) {
-        currentCells[x][y].setState(state);
-    }
-
-    public Cell getCell(int x, int y) {
-        return currentCells[x][y];
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder out = new StringBuilder();
-        for (Cell[] cs : currentCells) {
-            out.append(SEPARATOR);
-            for (Cell cell : cs)
-                out.append(cell).append(SEPARATOR);
-
-            out.append('\n');
-        }
-        return out.toString();
-    }
-
     private int countNeighbors(int x, int y) {
         int result = 0;
 
@@ -86,13 +46,13 @@ class Universe {
             int dx = x + d[0];
             int dy = y + d[1];
 
-            if (dx < 0) dx = sizeX - 1;
-            else if (dx >= sizeX) dx = 0;
+            if (dx < 0) dx = getSizeX() - 1;
+            else if (dx >= getSizeX()) dx = 0;
 
-            if (dy < 0) dy = sizeY - 1;
-            else if (dy >= sizeY) dy = 0;
+            if (dy < 0) dy = getSizeY() - 1;
+            else if (dy >= getSizeY()) dy = 0;
 
-            if (currentCells[dx][dy].getState() == CellState.ALIVE)
+            if (cells[dx][dy].getState() == CellState.ALIVE)
                 result++;
         }
 
@@ -100,15 +60,15 @@ class Universe {
     }
 
     public void nextGeneration() {
-        currentGeneration++;
+        incGeneration();
 
-        for (int x = 0; x < sizeX; x++) {
-            for (int y = 0; y < sizeY; y++) {
-                nextCells[x][y].newValue(currentCells[x][y].getState(), countNeighbors(x, y));
+        for (int x = 0; x < getSizeX(); x++) {
+            for (int y = 0; y < getSizeY(); y++) {
+                nextCells[x][y].newValue(cells[x][y].getState(), countNeighbors(x, y));
             }
         }
 
-        currentCells = nextCells;
+        cells = nextCells;
         nextCells = createCells();
     }
 
@@ -116,9 +76,9 @@ class Universe {
         boolean result = true;
 
         end:
-        for (int x = 0; x < sizeX; x++)
-            for (int y = 0; y < sizeY; y++)
-                if (currentCells[x][y].getState() != CellState.DEAD) {
+        for (int x = 0; x < getSizeX(); x++)
+            for (int y = 0; y < getSizeY(); y++)
+                if (cells[x][y].getState() != CellState.DEAD) {
                     result = false;
                     break end;
                 }
@@ -132,15 +92,15 @@ class Universe {
         if (o == null || getClass() != o.getClass()) return false;
         Universe universe = (Universe) o;
 
-        return sizeX == universe.getSizeX() &&
-                sizeY == universe.getSizeY() &&
-                Arrays.deepEquals(currentCells, universe.currentCells);
+        return getSizeX() == universe.getSizeX() &&
+                getSizeY() == universe.getSizeY() &&
+                Arrays.deepEquals(cells, universe.cells);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(getSizeX(), getSizeY());
-        result = 31 * result + Arrays.deepHashCode(currentCells);
+        result = 31 * result + Arrays.deepHashCode(cells);
         return result;
     }
 }
