@@ -1,12 +1,20 @@
 package ru.sbt.javaschool.gameoflife;
 
-import java.io.IOException;
+import ru.sbt.javaschool.gameoflife.algoritms.Algoritm;
+import ru.sbt.javaschool.gameoflife.creators.GameCreator;
+import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
+import ru.sbt.javaschool.gameoflife.ui.UserInterface;
+
 import java.util.Objects;
 
 public class Game {
     private final UserInterface view;
 
     private final Algoritm algoritm;
+
+    private static final String MSG_GREETING = "Добро пожаловать в симулюцию игры Жизнь.";
+    private static final String MSG_ENDGAME = "Конец игры";
+    private static final String MSG_GENERATION = "Поколение №%d: ";
 
     public Game(UserInterface view, Algoritm algoritm) {
         this.view = Objects.requireNonNull(view);
@@ -17,41 +25,57 @@ public class Game {
     public void run() {
         greeting();
 
-        GameCreator creator = Objects.requireNonNull(view.getCreator());
+
         GenerationBroker generation = null;
         try {
+            GameCreator creator = Objects.requireNonNull(view.getCreator());
             generation = creator.getFirstGeneration();
             algoritm.initialize(generation);
-        } catch (IOException e) {
-            view.showErrorMessage(e.getMessage());
+        } catch (GameException e) {
+            showError(e);
             return;
         }
 
         show(generation);
-        do {
-            generation = algoritm.nextGeneration();
-            show(generation);
-
-            try {
+        try {
+            do {
+                generation = algoritm.nextGeneration();
+                show(generation);
                 Thread.sleep(100);
-            } catch (InterruptedException e) {
-                view.showErrorMessage(e.getMessage());
-            }
-        } while (!algoritm.isEnd());
+            } while (!algoritm.isEnd());
+        } catch (GameException e) {
+            showError(e);
+        } catch (InterruptedException e) {
+            view.showErrorMessage(e.getMessage());
+        }
         endGame();
     }
 
+    private void showError(Throwable throwable) {
+        StringBuilder sb = new StringBuilder();
+        String message = throwable.getMessage();
+        sb.append(message);
+        Throwable t = throwable.getCause();
+        while (t != null) {
+            sb.append("\n");
+            message = t.getMessage();
+            sb.append(message);
+            t = t.getCause();
+        }
+        view.showErrorMessage(sb.toString());
+    }
+
     private void greeting() {
-        view.showMessage("Добро пожаловать в симулюцию игры Жизнь.");
+        view.showMessage(MSG_GREETING);
     }
 
     private void endGame() {
-        view.showMessage("Конец игры");
+        view.showMessage(MSG_ENDGAME);
         view.close();
     }
 
     private void show(GenerationBroker generation) {
-        view.showMessage(String.format("Поколение №%d: ", generation.getCurrentGeneration()));
+        view.showMessage(String.format(MSG_GENERATION, generation.getCurrentGeneration()));
         view.draw(generation);
     }
 }
