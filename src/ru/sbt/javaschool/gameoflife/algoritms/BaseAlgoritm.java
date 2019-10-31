@@ -10,9 +10,9 @@ public class BaseAlgoritm implements Algoritm {
 
     private static final int[][] offsets = {{0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}};
 
-    private Generation currentGen = null;
+    private GenerationBroker currentGen = null;
 
-    private Generation nextGen = null;
+    private GenerationBroker nextGen = null;
 
     private int countIteration = -1;
 
