@@ -18,6 +18,6 @@ public class GenerationFileWriter implements GenerationWriter {
     @Override
     public void write(GenerationBroker generation) {
         String format = formatter.toString(generation);
-        writer.save(format);
+        writer.save(format, formatter.getSplitter());
     }
 }

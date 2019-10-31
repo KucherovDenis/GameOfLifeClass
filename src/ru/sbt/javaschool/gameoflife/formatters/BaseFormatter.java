@@ -7,7 +7,7 @@ import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
 public class BaseFormatter implements Formatter {
 
     private static final String EMPTY_STR = "";
-    private static final char NEW_LINE = '\n';
+    protected static final String NEW_LINE = "\n";
 
     protected String SEPARATOR;
     protected String STR_ALIVE;
@@ -37,5 +37,18 @@ public class BaseFormatter implements Formatter {
             out.append(NEW_LINE);
         }
         return out.toString();
+    }
+
+    @Override
+    public Splitter getSplitter() {
+        return new SplitterImp();
+    }
+
+    private static class SplitterImp implements Splitter {
+
+        @Override
+        public String[] split(String message) {
+            return message.split(NEW_LINE);
+        }
     }
 }

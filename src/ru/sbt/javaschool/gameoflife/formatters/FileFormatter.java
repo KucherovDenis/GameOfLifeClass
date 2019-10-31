@@ -10,7 +10,8 @@ public class FileFormatter extends BaseFormatter {
 
     @Override
     public String toString(GenerationBroker generation) {
-        String result = String.format("%d %d %d\n", generation.getSizeX(), generation.getSizeY(), generation.getCurrentGeneration());
+        String result = String.format("%d %d %d", generation.getSizeX(), generation.getSizeY(), generation.getCurrentGeneration());
+        result += NEW_LINE;
         result += super.toString(generation);
         return result;
     }
