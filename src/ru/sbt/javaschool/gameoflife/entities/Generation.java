@@ -11,7 +11,7 @@ public class Generation implements GenerationBroker {
 
     private int generationNum;
 
-    protected Cell[][] cells;
+    private Cell[][] cells;
 
     public Generation(int sizeX, int sizeY) {
         this(sizeX, sizeY, 1);
