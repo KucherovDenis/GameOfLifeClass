@@ -40,7 +40,7 @@ public class XlsWriter implements Writer {
             sheet.autoSizeColumn(0);
             book.write(os);
         } catch (IOException e) {
-            throw new GameException(String.format(IOMessages.MSG_FILEWRITE, fileName), e);
+            throw new GameException(String.format(IOMessages.MSG_FILE_WRITE_ERROR, fileName), e);
         }
     }
 }

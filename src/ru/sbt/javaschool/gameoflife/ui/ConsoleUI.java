@@ -18,6 +18,14 @@ public class ConsoleUI implements UserInterface {
     private static final int KEY_FILE_CREATOR = 1;
     private static final int KEY_RANDOM_CREATOR = 2;
 
+    private static final String MSG_ERROR = "Произошла ошибка! ";
+    private static final String MSG_INVALID_FORMAT = "Не верный формат ввода. Значение должно быть числом.";
+    private static final String MSG_INPUT_FILE = "Введите имя файла:";
+    private static final String MSG_INVALID_VALUE = "Значение должно быть (%d) или (%d).";
+    private static final String MSG_SELECT_CREATOR = "Выберите способ создания игры:";
+    private static final String MSG_FILE_CREATOR = "\t(%d) - загрузить первое поколение из файла;";
+    private static final String MSG_RANDOM_CREATOR = "\t(%d) - сформировать первое поколение случайным образом.";
+
     public ConsoleUI(Formatter formatter) {
         this.formatter = Objects.requireNonNull(formatter);
     }
@@ -33,18 +41,18 @@ public class ConsoleUI implements UserInterface {
     }
 
     private int getKeyCreator() {
-        System.out.println("Выберите способ создания игры:");
-        System.out.println(String.format("\t(%d) - загрузить первое поколение из файла;", KEY_FILE_CREATOR));
-        System.out.println(String.format("\t(%d) - сформировать первое поколение случайным образом.", KEY_RANDOM_CREATOR));
+        System.out.println(MSG_SELECT_CREATOR);
+        System.out.println(String.format(MSG_FILE_CREATOR, KEY_FILE_CREATOR));
+        System.out.println(String.format(MSG_RANDOM_CREATOR, KEY_RANDOM_CREATOR));
 
         int result;
         while (true) {
             if (!input.hasNextInt()) {
-                System.out.println("Значение должно быть числом.");
+                System.out.println(MSG_INVALID_FORMAT);
             } else {
                 result = input.nextInt();
                 if (result == KEY_FILE_CREATOR || result == KEY_RANDOM_CREATOR) break;
-                else System.out.println("Значение должно быть (1) или (2).");
+                else System.out.println(String.format(MSG_INVALID_VALUE, KEY_FILE_CREATOR, KEY_RANDOM_CREATOR));
             }
         }
 
@@ -52,7 +60,7 @@ public class ConsoleUI implements UserInterface {
     }
 
     private String getFileName() {
-        System.out.println("Введите имя файла:");
+        System.out.println(MSG_INPUT_FILE);
         String result;
         while (true) {
             if (input.hasNext()) {
@@ -99,6 +107,6 @@ public class ConsoleUI implements UserInterface {
 
     @Override
     public void showErrorMessage(String message) {
-        System.out.println("Произошла ошибка! " + message);
+        System.out.println(MSG_ERROR + message);
     }
 }

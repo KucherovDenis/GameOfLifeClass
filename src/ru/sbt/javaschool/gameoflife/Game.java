@@ -15,6 +15,7 @@ public class Game {
     private static final String MSG_GREETING = "Добро пожаловать в симулюцию игры Жизнь.";
     private static final String MSG_ENDGAME = "Конец игры";
     private static final String MSG_GENERATION = "Поколение №%d: ";
+    //private static
 
     public Game(UserInterface view, Algoritm algoritm) {
         this.view = Objects.requireNonNull(view);
@@ -31,7 +32,7 @@ public class Game {
             GameCreator creator = Objects.requireNonNull(view.getCreator());
             generation = creator.getFirstGeneration();
             algoritm.initialize(generation);
-        } catch (GameException e) {
+        } catch (RuntimeException e) {
             showError(e);
             return;
         }

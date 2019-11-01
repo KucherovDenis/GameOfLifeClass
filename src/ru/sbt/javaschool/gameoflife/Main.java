@@ -8,6 +8,7 @@ import ru.sbt.javaschool.gameoflife.formatters.Formatter;
 import ru.sbt.javaschool.gameoflife.storages.*;
 import ru.sbt.javaschool.gameoflife.ui.ConsoleUI;
 import ru.sbt.javaschool.gameoflife.ui.UserInterface;
+import ru.sbt.javaschool.gameoflife.ui.WindowUI;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,8 +19,11 @@ public class Main {
             int sizeY = Integer.parseInt(args[2]);
             game.initialize(new FileCreator(args[0], sizeX, sizeY), 100);
         } else game.initialize(new RandomCreator());*/
-        Formatter formatter = new ConsoleFormatter();
-        UserInterface view  = new ConsoleUI(formatter);
+
+        //Formatter formatter = new ConsoleFormatter();
+        //UserInterface view  = new ConsoleUI(formatter);
+
+        UserInterface view = new WindowUI();
         Storage storage = null;
         try {
             storage = new FileStorage("Storage", new GenerationEquals(), FileStorageType.XLS);

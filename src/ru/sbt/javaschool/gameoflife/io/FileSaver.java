@@ -22,7 +22,7 @@ public class FileSaver implements Writer {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             writer.write(message);
         } catch (IOException e) {
-            String msg = String.format(IOMessages.MSG_FILEWRITE, fileName);
+            String msg = String.format(IOMessages.MSG_FILE_WRITE_ERROR, fileName);
             throw new GameException(msg, e);
         }
     }
