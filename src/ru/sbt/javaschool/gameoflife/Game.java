@@ -14,7 +14,7 @@ public class Game {
 
     private static final String MSG_GREETING = "Добро пожаловать в симулюцию игры Жизнь.";
     private static final String MSG_ENDGAME = "Конец игры";
-    private static final String MSG_GENERATION = "Поколение №%d: ";
+    private static final String MSG_GENERATION = "Поколение №%d ";
     //private static
 
     public Game(UserInterface view, Algoritm algoritm) {
@@ -42,7 +42,7 @@ public class Game {
             do {
                 generation = algoritm.nextGeneration();
                 show(generation);
-                Thread.sleep(100);
+                Thread.sleep(500);
             } while (!algoritm.isEnd());
         } catch (GameException e) {
             showError(e);

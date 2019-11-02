@@ -34,6 +34,10 @@ public class FileUtils {
         return isExtention(filePath, XLS_EXT) || isExtention(filePath, XLS_EXT2);
     }
 
+    public static boolean isOldXlsInterface(String filePath) {
+        return isExtention(filePath, XLS_EXT);
+    }
+
     public static boolean isTxtFile(String filePath) {
         return isExtention(filePath, TXT_EXT);
     }

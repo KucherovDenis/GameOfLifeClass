@@ -6,8 +6,10 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.sbt.javaschool.gameoflife.GameException;
 import ru.sbt.javaschool.gameoflife.formatters.Splitter;
+import ru.sbt.javaschool.gameoflife.utils.FileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,9 +29,16 @@ public class XlsWriter implements Writer {
     public void save(String message, Splitter splitter) {
         Objects.requireNonNull(splitter);
         File excel = new File(fileName);
-        try (Workbook book = new HSSFWorkbook();
-             FileOutputStream os = new FileOutputStream(excel);) {
-            Sheet sheet = book.createSheet(SHEET_NAME);
+
+        Workbook workbook;
+        if(FileUtils.isOldXlsInterface(fileName)) {
+            workbook = new HSSFWorkbook();
+        } else {
+            workbook = new XSSFWorkbook();
+        }
+
+        try (FileOutputStream os = new FileOutputStream(excel);) {
+            Sheet sheet = workbook.createSheet(SHEET_NAME);
             String[] lines = splitter.split(message);
             for (int i = 0; i < lines.length; i++) {
                 Row row = sheet.createRow(i);
@@ -38,7 +47,8 @@ public class XlsWriter implements Writer {
             }
 
             sheet.autoSizeColumn(0);
-            book.write(os);
+            workbook.write(os);
+            workbook.close();
         } catch (IOException e) {
             throw new GameException(String.format(IOMessages.MSG_FILE_WRITE_ERROR, fileName), e);
         }

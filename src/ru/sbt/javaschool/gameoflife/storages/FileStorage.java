@@ -62,10 +62,11 @@ public class FileStorage extends BaseStorage implements StorageClearable {
                     break;
 
                 case XLS:
+                case XLSX:
                     writer = new XlsWriter(fileName);
                     break;
             }
-            if(writer == null)
+            if (writer == null)
                 throw new GameException(String.format(MSG_FORMATNOTSUPPORTED, storageType.getExtention()));
 
             GenerationWriter genWriter = new GenerationFileWriter(writer, new FileFormatter());
@@ -80,9 +81,9 @@ public class FileStorage extends BaseStorage implements StorageClearable {
 
         try {
             Loader loader = null;
-            if(FileUtils.isTxtFile(fileName)) loader = new FileLoader(fileName);
-            else if(FileUtils.isXlsFile(fileName)) loader = new XlsLoader(fileName);
-            if(loader == null)
+            if (FileUtils.isTxtFile(fileName)) loader = new FileLoader(fileName);
+            else if (FileUtils.isXlsFile(fileName)) loader = new XlsLoader(fileName);
+            if (loader == null)
                 throw new GameException(String.format(MSG_FORMATNOTSUPPORTED, storageType.getExtention()));
 
             GenerationLoader genLoader = new GenerationFileLoader(loader, new GenerationBaseParser());
