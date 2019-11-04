@@ -10,4 +10,5 @@ public interface UserInterface {
     void draw(GenerationBroker generation);
     void close();
     void showErrorMessage(String message);
+    boolean isStop();
 }
