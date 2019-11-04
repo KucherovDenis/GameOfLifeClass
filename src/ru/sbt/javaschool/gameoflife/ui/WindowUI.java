@@ -100,7 +100,9 @@ public class WindowUI implements UserInterface {
     }
 
     private GameFieldSize getFieldSize() {
-        String val = JOptionPane.showInputDialog(frame, String.format(INPUT_DIALOG_FIELD_SIZE, GameFieldSize.format()));
+        String val = JOptionPane.showInputDialog(frame,
+                String.format(INPUT_DIALOG_FIELD_SIZE, GameFieldSize.format()));
+
         return GameFieldSize.get(val);
     }
 
