@@ -1,6 +1,8 @@
 package ru.sbt.javaschool.gameoflife.utils;
 
-import java.io.File;
+import ru.sbt.javaschool.gameoflife.GameException;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.nio.file.Path;
@@ -40,5 +42,26 @@ public class FileUtils {
 
     public static boolean isTxtFile(String filePath) {
         return isExtension(filePath, TXT_EXT);
+    }
+
+    public static <T extends Serializable> void serialize(String fileName, T obj) {
+        try (FileOutputStream fos = new FileOutputStream(fileName);
+             ObjectOutputStream out = new ObjectOutputStream(fos)) {
+            out.writeObject(obj);
+        }
+        catch (IOException e) {
+            throw new GameException("Ошибка сериализации.", e);
+        }
+    }
+
+    public static <T extends Serializable> T deserialize(String fileName, Class<T> cl) {
+        try (FileInputStream fis = new FileInputStream(fileName);
+             ObjectInputStream inputStream = new ObjectInputStream(fis)) {
+             Object o = inputStream.readObject();
+             return cl.cast(o);
+        }
+        catch (IOException | ClassNotFoundException e) {
+            throw new GameException("Ошибка десериализации.", e);
+        }
     }
 }

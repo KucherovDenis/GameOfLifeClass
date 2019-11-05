@@ -1,8 +1,9 @@
 package ru.sbt.javaschool.gameoflife.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Cell {
+public class Cell implements Serializable {
     public CellState getState() {
         return state;
     }

@@ -46,12 +46,9 @@ public class FileStorage extends BaseStorage implements StorageClearable {
         }
     }
 
-    @Override
-    public void add(GenerationBroker generation) {
-        String fileName = folder + "\\" + generation.getCurrentGeneration();
+    private void write(String filePath, GenerationBroker generation) {
         try {
-
-            fileName += storageType.getExtension();
+            final String fileName = filePath + storageType.getExtension();
             Writer writer;
             switch (storageType) {
                 case TXT:
@@ -63,14 +60,26 @@ public class FileStorage extends BaseStorage implements StorageClearable {
                     writer = new XlsWriter(fileName);
                     break;
                 default:
-                    throw new GameException(String.format(MSG_FORMAT_NOT_SUPPORTED, storageType.getExtension()));
+                    //throw new GameException(String.format(MSG_FORMAT_NOT_SUPPORTED, storageType.getExtension()));
+                    writer = null;
             }
 
-            GenerationWriter genWriter = new GenerationFileWriter(writer, new FileSaveFormatter());
+            GenerationWriter genWriter;
+            if (writer != null) {
+                genWriter = new GenerationFileWriter(writer, new FileSaveFormatter());
+            } else {
+                genWriter = new GenerationSerializer(fileName);
+            }
             genWriter.write(generation);
         } catch (GameException e) {
             throw new GameException(MSG_STORAGE_WRITE, e);
         }
+    }
+
+    @Override
+    public void add(GenerationBroker generation) {
+        String filePath = folder + "\\" + generation.getCurrentGeneration();
+        write(filePath, generation);
     }
 
     private GenerationBroker load(String fileName) {
@@ -80,10 +89,14 @@ public class FileStorage extends BaseStorage implements StorageClearable {
             Loader loader = null;
             if (FileUtils.isTxtFile(fileName)) loader = new FileLoader(fileName);
             else if (FileUtils.isXlsFile(fileName)) loader = new XlsLoader(fileName);
-            if (loader == null)
-                throw new GameException(String.format(MSG_FORMAT_NOT_SUPPORTED, storageType.getExtension()));
 
-            GenerationLoader genLoader = new GenerationFileLoader(loader, new GenerationBaseParser());
+            GenerationLoader genLoader;
+            if (loader != null) {
+                genLoader = new GenerationFileLoader(loader, new GenerationBaseParser());
+                //throw new GameException(String.format(MSG_FORMAT_NOT_SUPPORTED, storageType.getExtension()));
+            } else {
+                genLoader = new GenerationDeserializer(fileName);
+            }
             result = genLoader.load();
         } catch (GameException e) {
             throw new GameException(MSG_STORAGE_LOAD, e);

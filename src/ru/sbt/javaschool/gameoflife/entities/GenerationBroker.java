@@ -1,6 +1,8 @@
 package ru.sbt.javaschool.gameoflife.entities;
 
-public interface GenerationBroker {
+import java.io.Serializable;
+
+public interface GenerationBroker extends Serializable {
 
     int getCurrentGeneration();
 
