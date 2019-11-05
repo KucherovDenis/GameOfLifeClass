@@ -5,7 +5,7 @@ import ru.sbt.javaschool.gameoflife.GameException;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class GameFieldSize {
+public class FieldSize {
 
     private static final String MSG_INVALID_FORMAT_DATA = "Не верный формат данных.";
 
@@ -21,11 +21,11 @@ public class GameFieldSize {
 
     private int sizeY;
 
-    public GameFieldSize(){
+    public FieldSize(){
         this(-1, -1);
     }
 
-    public GameFieldSize (int sizeX, int sizeY) {
+    public FieldSize(int sizeX, int sizeY) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
     }
@@ -34,15 +34,15 @@ public class GameFieldSize {
         return Pattern.matches("\\d{1,2}\\*\\d{1,2}", value);
     }
 
-    public static GameFieldSize get(String value) {
+    public static FieldSize get(String value) {
         Objects.requireNonNull(value);
         boolean valid = isMatch(value);
-        GameFieldSize fieldSize;
+        FieldSize fieldSize;
         if(valid) {
             String[] params = value.split("\\*");
             int sizeX = Integer.parseInt(params[0]);
             int sizeY = Integer.parseInt(params[1]);
-            fieldSize = new GameFieldSize(sizeX, sizeY);
+            fieldSize = new FieldSize(sizeX, sizeY);
         } else throw new GameException(MSG_INVALID_FORMAT_DATA);
         return fieldSize;
     }

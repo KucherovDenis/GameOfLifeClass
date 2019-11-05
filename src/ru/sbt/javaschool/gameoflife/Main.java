@@ -4,15 +4,32 @@ import ru.sbt.javaschool.gameoflife.algoritms.Algoritm;
 import ru.sbt.javaschool.gameoflife.algoritms.BaseAlgoritm;
 import ru.sbt.javaschool.gameoflife.entities.GenerationEquals;
 import ru.sbt.javaschool.gameoflife.formatters.ConsoleFormatter;
+import ru.sbt.javaschool.gameoflife.formatters.FileFormatter;
 import ru.sbt.javaschool.gameoflife.formatters.Formatter;
 import ru.sbt.javaschool.gameoflife.storages.*;
 import ru.sbt.javaschool.gameoflife.ui.ConsoleUI;
+import ru.sbt.javaschool.gameoflife.ui.TextFileUI;
 import ru.sbt.javaschool.gameoflife.ui.UserInterface;
 import ru.sbt.javaschool.gameoflife.ui.WindowUI;
 
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * <p>Ключ <strong>-w</strong> данные выводятся в графическом окне.</p>
+ * <br\>
+ * <p>Ключ <strong>-f [имя_файла]</strong> данные выводятся в текстовый файл.<br\>
+ * 	<strong>[имя_файла]</strong> путь к файлу куда будут выводиться данные.</p>
+ * 	<br\>
+ * 	<p>Ключ <strong>-s [директория] [тип_вывода]</strong> задает хранилище поколений.
+ * 	Обязательно указывать оба параметра, если опустить будет задано значение по умолчанию.<br\>
+ * 		<strong>[директория]</strong> путь к директории хранилища. По умолчанию <strong>Storage</strong>.<br\>
+ * 		<strong>[тип_вывода]</strong> данные в хранилище сохраняются в <strong>txt, xls, xlsx</strong>.
+ * 		По умолчанию используется <strong>txt</strong>.</p>
+ * 	<br\>
+ * 	<p>Если ключ <strong>-w</strong> или <strong>-f</strong> не заданы данные выводятся на консоль.
+ * 	Если ключ <strong>-s</strong> не задан в качестве хранилища используется оперативная память.</p>
+ */
 public class Main {
 
     private static UserInterface getUserInterface(List<String> args) {
@@ -20,14 +37,21 @@ public class Main {
 
         if (args.contains("-w")) {
             view = new WindowUI();
+        } else if (args.contains("-f")) {
+            Formatter formatter = new FileFormatter();
+            int index = args.indexOf("-f");
+            String fileName = getValue(args, index + 1);
+            if (fileName != null) view = new TextFileUI(fileName, formatter);
+            else throw new GameException("Не задано имя файла для вывода данных.");
         } else {
             Formatter formatter = new ConsoleFormatter();
             view = new ConsoleUI(formatter);
         }
+
         return view;
     }
 
-    private static String getIndex(List<String> args, int index) {
+    private static String getValue(List<String> args, int index) {
         String result = null;
         if (index < args.size()) {
             result = args.get(index);
@@ -41,19 +65,18 @@ public class Main {
         try {
             int index = args.indexOf("-s");
             if (index != -1) {
-                String name = getIndex(args, index + 1);
-                String type = getIndex(args, index + 2);
+                String name = getValue(args, index + 1);
+                String type = getValue(args, index + 2);
                 FileStorageType sType;
-                if(name == null) name = "Storage";
-                if(type == null) sType = FileStorageType.TXT;
+                if (name == null) name = "Storage";
+                if (type == null) sType = FileStorageType.TXT;
                 else {
                     sType = FileStorageType.valueOf(type.toUpperCase());
                 }
 
                 storage = new FileStorage(name, new GenerationEquals(), sType);
                 ((StorageClearable) storage).clear();
-            }
-            else storage = new MemoryStorage(new GenerationEquals());
+            } else storage = new MemoryStorage(new GenerationEquals());
         } catch (GameException e) {
             System.out.println(e.getMessage());
             storage = new MemoryStorage(new GenerationEquals());
@@ -61,12 +84,34 @@ public class Main {
         return storage;
     }
 
+    private static void showHelp() {
+        System.out.println("Ключ -w \tданные выводятся в графическом окне.");
+        System.out.println("Ключ -f [имя_файла] \tданные выводятся в текстовый файл.");
+        System.out.println("\t[имя_файла] \tпуть к файлу куда будут выводиться данные.");
+        System.out.println("Ключ -s [директория] [тип_вывода] \tзадает хранилище поколений.\n" +
+                "Обязательно указывать оба параметра, если опустить будет задано значение по умолчанию.");
+        System.out.println("\t[директория] \tпуть к директории хранилища. По умолчанию Storage.");
+        System.out.println("\t[тип_вывода] \tданные в хранилище сохраняются в txt, xls, xlsx. По умолчанию используется txt.");
+        System.out.println("Если ключ -w или -f не заданы данные выводятся на консоль.");
+        System.out.println("Если ключ -s не задан в качестве хранилища используется оперативная память.");
+    }
+
     public static void main(String[] args) {
         List<String> argsList = Arrays.asList(args);
-        UserInterface view = getUserInterface(argsList);
-        Storage storage = getStorage(argsList);
-        Algoritm algoritm = new BaseAlgoritm(storage);
-        Game game = new Game(view, algoritm);
-        game.run();
+        if (argsList.contains("-h")) showHelp();
+        else {
+            UserInterface view;
+            try {
+                view = getUserInterface(argsList);
+            } catch (GameException e) {
+                System.out.println(e.getMessage());
+                return;
+            }
+
+            Storage storage = getStorage(argsList);
+            Algoritm algoritm = new BaseAlgoritm(storage);
+            Game game = new Game(view, algoritm);
+            game.run();
+        }
     }
 }

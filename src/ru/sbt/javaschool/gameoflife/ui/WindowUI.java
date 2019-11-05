@@ -5,7 +5,7 @@ import ru.sbt.javaschool.gameoflife.creators.FileCreator;
 import ru.sbt.javaschool.gameoflife.creators.GameCreator;
 import ru.sbt.javaschool.gameoflife.creators.RandomCreator;
 import ru.sbt.javaschool.gameoflife.entities.CellState;
-import ru.sbt.javaschool.gameoflife.entities.GameFieldSize;
+import ru.sbt.javaschool.gameoflife.entities.FieldSize;
 import ru.sbt.javaschool.gameoflife.entities.Generation;
 import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
 
@@ -99,11 +99,11 @@ public class WindowUI implements UserInterface {
         }
     }
 
-    private GameFieldSize getFieldSize() {
+    private FieldSize getFieldSize() {
         String val = JOptionPane.showInputDialog(frame,
-                String.format(INPUT_DIALOG_FIELD_SIZE, GameFieldSize.format()));
+                String.format(INPUT_DIALOG_FIELD_SIZE, FieldSize.format()));
 
-        return GameFieldSize.get(val);
+        return FieldSize.get(val);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class WindowUI implements UserInterface {
             creator = new FileCreator(fileName);
         } else {
             try {
-                GameFieldSize fieldSize = getFieldSize();
+                FieldSize fieldSize = getFieldSize();
                 creator = new RandomCreator(fieldSize);
             } catch (RuntimeException e) {
                 creator = new RandomCreator();

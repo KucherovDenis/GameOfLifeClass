@@ -1,16 +1,13 @@
 package ru.sbt.javaschool.gameoflife.storages;
 
-import org.omg.CORBA.Environment;
 import ru.sbt.javaschool.gameoflife.GameException;
 import ru.sbt.javaschool.gameoflife.entities.Equals;
 import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
-import ru.sbt.javaschool.gameoflife.formatters.FileFormatter;
-import ru.sbt.javaschool.gameoflife.formatters.Formatter;
+import ru.sbt.javaschool.gameoflife.formatters.FileSaveFormatter;
 import ru.sbt.javaschool.gameoflife.io.*;
 import ru.sbt.javaschool.gameoflife.parsers.GenerationBaseParser;
 import ru.sbt.javaschool.gameoflife.utils.FileUtils;
 
-import javax.rmi.CORBA.Util;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
@@ -69,7 +66,7 @@ public class FileStorage extends BaseStorage implements StorageClearable {
             if (writer == null)
                 throw new GameException(String.format(MSG_FORMATNOTSUPPORTED, storageType.getExtention()));
 
-            GenerationWriter genWriter = new GenerationFileWriter(writer, new FileFormatter());
+            GenerationWriter genWriter = new GenerationFileWriter(writer, new FileSaveFormatter());
             genWriter.write(generation);
         } catch (GameException e) {
             throw new GameException(MSG_STORAGEWRITE, e);

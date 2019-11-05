@@ -1,24 +1,24 @@
 package ru.sbt.javaschool.gameoflife.creators;
 
 import ru.sbt.javaschool.gameoflife.entities.CellState;
-import ru.sbt.javaschool.gameoflife.entities.GameFieldSize;
+import ru.sbt.javaschool.gameoflife.entities.FieldSize;
 import ru.sbt.javaschool.gameoflife.entities.Generation;
 import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
 
 public class RandomCreator implements GameCreator {
 
-    private final GameFieldSize fieldSize;
+    private final FieldSize fieldSize;
 
     public RandomCreator() {
         this(20, 20);
     }
 
     public RandomCreator(int sizeX, int sizeY) {
-        fieldSize = new GameFieldSize(sizeX, sizeY);
+        fieldSize = new FieldSize(sizeX, sizeY);
     }
 
-    public RandomCreator(GameFieldSize size) {
-        fieldSize = new GameFieldSize(size.getSizeX(), size.getSizeY());
+    public RandomCreator(FieldSize size) {
+        fieldSize = new FieldSize(size.getSizeX(), size.getSizeY());
     }
 
     @Override

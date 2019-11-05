@@ -11,8 +11,6 @@ public class FileSaver implements Writer {
 
     private final String fileName;
 
-
-
     public FileSaver(String fileName) {
         this.fileName = fileName;
     }

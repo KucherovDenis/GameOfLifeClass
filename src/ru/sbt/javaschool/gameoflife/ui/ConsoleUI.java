@@ -1,13 +1,13 @@
 package ru.sbt.javaschool.gameoflife.ui;
 
-import ru.sbt.javaschool.gameoflife.GameException;
 import ru.sbt.javaschool.gameoflife.creators.FileCreator;
-import ru.sbt.javaschool.gameoflife.entities.GameFieldSize;
+import ru.sbt.javaschool.gameoflife.entities.FieldSize;
 import ru.sbt.javaschool.gameoflife.formatters.Formatter;
 import ru.sbt.javaschool.gameoflife.creators.GameCreator;
 import ru.sbt.javaschool.gameoflife.creators.RandomCreator;
 import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
 
+import java.io.PrintStream;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -45,7 +45,7 @@ public class ConsoleUI implements UserInterface {
         System.out.println(message);
     }
 
-    private int getKeyCreator() {
+    private int getKey() {
         System.out.println(MSG_SELECT_CREATOR);
         System.out.println(String.format(MSG_FILE_CREATOR, KEY_FILE_CREATOR));
         System.out.println(String.format(MSG_RANDOM_CREATOR, KEY_RANDOM_CREATOR));
@@ -81,17 +81,18 @@ public class ConsoleUI implements UserInterface {
         return readInputString();
     }
 
-    private GameFieldSize getFieldSize() {
-        System.out.println(String.format(MSG_INPUT_FIELD_SIZE, GameFieldSize.format()));
+    private FieldSize getFieldSize() {
+        System.out.println(String.format(MSG_INPUT_FIELD_SIZE, FieldSize.format()));
         String val = readInputString();
-        return GameFieldSize.get(val);
+        return FieldSize.get(val);
     }
 
     @Override
     public GameCreator getCreator() {
         GameCreator creator = null;
+        if(input == null) return creator;
 
-        int key = getKeyCreator();
+        int key = getKey();
         switch (key) {
             case KEY_FILE_CREATOR:
                 String fileName = getFileName();
@@ -100,7 +101,7 @@ public class ConsoleUI implements UserInterface {
 
             case KEY_RANDOM_CREATOR:
                 try {
-                    GameFieldSize size = getFieldSize();
+                    FieldSize size = getFieldSize();
                     creator = new RandomCreator(size);
 
                 } catch (RuntimeException e) {
@@ -134,6 +135,7 @@ public class ConsoleUI implements UserInterface {
 
     @Override
     public boolean isStop() {
+        if (input == null) return false;
         System.out.println(MSG_CONTINUE_GAME);
         String answer = input.next();
         return !"y".equals(answer.toLowerCase());
