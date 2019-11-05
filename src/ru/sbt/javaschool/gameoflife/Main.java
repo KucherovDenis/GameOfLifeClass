@@ -1,7 +1,7 @@
 package ru.sbt.javaschool.gameoflife;
 
-import ru.sbt.javaschool.gameoflife.algoritms.Algorithm;
-import ru.sbt.javaschool.gameoflife.algoritms.BaseAlgorithm;
+import ru.sbt.javaschool.gameoflife.algorithms.Algorithm;
+import ru.sbt.javaschool.gameoflife.algorithms.BaseAlgorithm;
 import ru.sbt.javaschool.gameoflife.entities.GenerationEquals;
 import ru.sbt.javaschool.gameoflife.formatters.ConsoleFormatter;
 import ru.sbt.javaschool.gameoflife.formatters.FileFormatter;

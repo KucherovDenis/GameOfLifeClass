@@ -1,4 +1,4 @@
-package ru.sbt.javaschool.gameoflife.algoritms;
+package ru.sbt.javaschool.gameoflife.algorithms;
 
 import ru.sbt.javaschool.gameoflife.entities.Cell;
 import ru.sbt.javaschool.gameoflife.entities.CellState;

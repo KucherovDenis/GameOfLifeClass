@@ -1,6 +1,6 @@
 package ru.sbt.javaschool.gameoflife;
 
-import ru.sbt.javaschool.gameoflife.algoritms.Algorithm;
+import ru.sbt.javaschool.gameoflife.algorithms.Algorithm;
 import ru.sbt.javaschool.gameoflife.creators.GameCreator;
 import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
 import ru.sbt.javaschool.gameoflife.ui.UserInterface;
