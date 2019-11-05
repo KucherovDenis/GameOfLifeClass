@@ -7,7 +7,5 @@ public interface Algorithm {
 
     GenerationBroker nextGeneration();
 
-    void setCountIteration(int value);
-
     boolean isEnd();
 }

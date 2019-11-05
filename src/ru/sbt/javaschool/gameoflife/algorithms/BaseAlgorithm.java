@@ -14,8 +14,6 @@ public class BaseAlgorithm implements Algorithm {
 
     private GenerationBroker nextGen = null;
 
-    private int countIteration = -1;
-
     private final Storage storage;
 
     public BaseAlgorithm(Storage storage) {
@@ -65,17 +63,14 @@ public class BaseAlgorithm implements Algorithm {
             }
         }
 
-        if (storage != null)
-            storage.add(currentGen);
+        save();
         currentGen = nextGen;
         nextGen = new Generation(currentGen.getSizeX(), currentGen.getSizeY(), currentGen.getCurrentGeneration() + 1);
         return currentGen;
     }
 
-    @Override
-    public void setCountIteration(int value) {
-        if (value <= 0) countIteration = -1;
-        else countIteration = value;
+    private void save() {
+        if (storage != null) storage.add(currentGen);
     }
 
     private boolean isDead() {
@@ -96,24 +91,14 @@ public class BaseAlgorithm implements Algorithm {
 
     private boolean isReplay() {
         boolean result = false;
-        if (storage != null)
-            result = storage.contains(currentGen);
+        if (storage != null) result = storage.contains(currentGen);
         return result;
     }
 
     @Override
     public boolean isEnd() {
-        boolean result = false;
-        if (countIteration != -1) {
-            if (countIteration == currentGen.getCurrentGeneration()) result = true;
-        } else {
-            result = isDead() || isReplay();
-        }
-
-        if(result && storage != null) {
-            storage.add(currentGen);
-        }
-
+        boolean result = isDead() || isReplay();
+        if (result) save();
         return result;
     }
 }
