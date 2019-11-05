@@ -1,6 +1,6 @@
 package ru.sbt.javaschool.gameoflife;
 
-import ru.sbt.javaschool.gameoflife.algoritms.Algoritm;
+import ru.sbt.javaschool.gameoflife.algoritms.Algorithm;
 import ru.sbt.javaschool.gameoflife.creators.GameCreator;
 import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
 import ru.sbt.javaschool.gameoflife.ui.UserInterface;
@@ -10,15 +10,15 @@ import java.util.Objects;
 public class Game {
     private final UserInterface view;
 
-    private final Algoritm algoritm;
+    private final Algorithm algorithm;
 
     private static final String MSG_GREETING = "Добро пожаловать в симулюцию игры Жизнь.";
     private static final String MSG_ENDGAME = "Конец игры";
     private static final String MSG_GENERATION = "Поколение №%d ";
 
-    public Game(UserInterface view, Algoritm algoritm) {
+    public Game(UserInterface view, Algorithm algorithm) {
         this.view = Objects.requireNonNull(view);
-        this.algoritm = Objects.requireNonNull(algoritm);
+        this.algorithm = Objects.requireNonNull(algorithm);
         this.view.init();
     }
 
@@ -26,11 +26,11 @@ public class Game {
         greeting();
 
 
-        GenerationBroker generation = null;
+        GenerationBroker generation;
         try {
             GameCreator creator = Objects.requireNonNull(view.getCreator());
             generation = creator.getFirstGeneration();
-            algoritm.initialize(generation);
+            algorithm.initialize(generation);
         } catch (RuntimeException e) {
             showError(e);
             return;
@@ -40,10 +40,10 @@ public class Game {
             show(generation);
             Thread.sleep(1000);
             do {
-                generation = algoritm.nextGeneration();
+                generation = algorithm.nextGeneration();
                 show(generation);
                 Thread.sleep(500);
-            } while (!(view.isStop() || algoritm.isEnd()));
+            } while (!(view.isStop() || algorithm.isEnd()));
         } catch (GameException e) {
             showError(e);
         } catch (InterruptedException e) {

@@ -13,15 +13,15 @@ public class FileCreator implements GameCreator {
 
     private final GenerationLoader loader;
 
-    private static final String MSG_GAMENOTCREATE = "Не удалось создать игру.";
-    private static final String MSG_FILENOTSUPPORTED = "Не поддерживаемый формат файла.";
+    private static final String MSG_GAME_NOT_CREATE = "Не удалось создать игру.";
+    private static final String MSG_FILE_NOT_SUPPORTED = "Не поддерживаемый формат файла.";
 
     public FileCreator(String fileName) {
         if (FileUtils.isTxtFile(fileName)) {
             loader = new GenerationFileLoader(new FileLoader(fileName), new GenerationBaseParser());
         } else if (FileUtils.isXlsFile(fileName)) {
             loader = new GenerationFileLoader(new XlsLoader(fileName), new GenerationBaseParser());
-        } else throw new GameException(MSG_GAMENOTCREATE + "\n" + MSG_FILENOTSUPPORTED);
+        } else throw new GameException(MSG_GAME_NOT_CREATE + "\n" + MSG_FILE_NOT_SUPPORTED);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class FileCreator implements GameCreator {
         try {
             if (loader != null) result = loader.load();
         } catch (GameException e) {
-            throw new GameException(MSG_GAMENOTCREATE, e);
+            throw new GameException(MSG_GAME_NOT_CREATE, e);
         }
         return result;
     }

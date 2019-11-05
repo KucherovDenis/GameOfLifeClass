@@ -37,7 +37,7 @@ public class XlsWriter implements Writer {
             workbook = new XSSFWorkbook();
         }
 
-        try (FileOutputStream os = new FileOutputStream(excel);) {
+        try (FileOutputStream os = new FileOutputStream(excel)) {
             Sheet sheet = workbook.createSheet(SHEET_NAME);
             String[] lines = splitter.split(message);
             for (int i = 0; i < lines.length; i++) {

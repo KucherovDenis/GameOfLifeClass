@@ -17,9 +17,9 @@ public class FieldSize {
         return sizeY;
     }
 
-    private int sizeX;
+    private final int sizeX;
 
-    private int sizeY;
+    private final int sizeY;
 
     public FieldSize(){
         this(-1, -1);

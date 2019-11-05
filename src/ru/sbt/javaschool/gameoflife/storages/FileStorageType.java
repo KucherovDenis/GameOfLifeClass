@@ -2,13 +2,13 @@ package ru.sbt.javaschool.gameoflife.storages;
 
 public enum FileStorageType {
     XLS(".xls"), XLSX(".xlsx"), TXT(".txt");
-    private String extention;
+    private final String extension;
 
-    FileStorageType(String extention) {
-        this.extention = extention;
+    FileStorageType(String extension) {
+        this.extension = extension;
     }
 
-    public String getExtention() {
-        return extention;
+    public String getExtension() {
+        return extension;
     }
 }

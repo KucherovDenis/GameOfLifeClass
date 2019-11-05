@@ -25,20 +25,20 @@ public class FileUtils {
         return fileList;
     }
 
-    private static boolean isExtention(String filePath, String extention) {
+    private static boolean isExtension(String filePath, String extension) {
         Path path = Paths.get(filePath);
-        return path.toString().toLowerCase().endsWith(extention);
+        return path.toString().toLowerCase().endsWith(extension);
     }
 
     public static boolean isXlsFile(String filePath) {
-        return isExtention(filePath, XLS_EXT) || isExtention(filePath, XLS_EXT2);
+        return isExtension(filePath, XLS_EXT) || isExtension(filePath, XLS_EXT2);
     }
 
     public static boolean isOldXlsInterface(String filePath) {
-        return isExtention(filePath, XLS_EXT);
+        return isExtension(filePath, XLS_EXT);
     }
 
     public static boolean isTxtFile(String filePath) {
-        return isExtention(filePath, TXT_EXT);
+        return isExtension(filePath, TXT_EXT);
     }
 }

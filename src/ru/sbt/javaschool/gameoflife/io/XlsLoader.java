@@ -39,15 +39,15 @@ public class XlsLoader implements Loader {
         List<String> result = new ArrayList<>();
 
         try (InputStream stream = new FileInputStream(file)) {
-            Workbook workbook = null;
+            Workbook workbook;
             if (FileUtils.isOldXlsInterface(fileName)) {
                 workbook = new HSSFWorkbook(stream);
             } else {
                 workbook = new XSSFWorkbook(stream);
             }
 
-            load(workbook, result);
-            workbook.close();
+                load(workbook, result);
+                workbook.close();
         } catch (FileNotFoundException e) {
             String message = String.format(IOMessages.MSG_FILE_NOT_FOUND, fileName);
             throw new GameException(message, e);

@@ -6,7 +6,7 @@ import ru.sbt.javaschool.gameoflife.entities.Generation;
 import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
 import ru.sbt.javaschool.gameoflife.storages.Storage;
 
-public class BaseAlgoritm implements Algoritm {
+public class BaseAlgorithm implements Algorithm {
 
     private static final int[][] offsets = {{0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}};
 
@@ -18,7 +18,7 @@ public class BaseAlgoritm implements Algoritm {
 
     private final Storage storage;
 
-    public BaseAlgoritm(Storage storage) {
+    public BaseAlgorithm(Storage storage) {
         this.storage = storage;
     }
 

@@ -9,9 +9,9 @@ public class Generation implements GenerationBroker {
 
     private final int sizeY;
 
-    private int generationNum;
+    private final int generationNum;
 
-    private Cell[][] cells;
+    private final Cell[][] cells;
 
     public Generation(int sizeX, int sizeY) {
         this(sizeX, sizeY, 1);

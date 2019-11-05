@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MemoryStorage extends BaseStorage implements Storage {
 
-    private List<GenerationBroker> generations;
+    private final List<GenerationBroker> generations;
 
     public MemoryStorage(Equals<GenerationBroker> equalsImpl) {
         super(equalsImpl);

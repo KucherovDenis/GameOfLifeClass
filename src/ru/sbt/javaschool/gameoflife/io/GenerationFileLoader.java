@@ -18,7 +18,7 @@ public class GenerationFileLoader implements GenerationLoader {
 
     @Override
     public GenerationBroker load() {
-        GenerationBroker result = null;
+        GenerationBroker result;
         List<String> strings = loader.load();
         result = parser.parsing(strings);
         return result;

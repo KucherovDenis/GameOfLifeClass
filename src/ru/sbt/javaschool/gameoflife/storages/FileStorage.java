@@ -16,10 +16,10 @@ public class FileStorage extends BaseStorage implements StorageClearable {
 
     private final String folder;
 
-    private final String MSG_STORAGELOAD = "Ошибка чтения данных из хранилища.";
-    private final String MSG_STORAGEWRITE = "Ошибка записи данных в хранилище.";
-    private final String MSG_STORAGENOTCREATE = "Не возможно создать директорию %s.";
-    private final String MSG_FORMATNOTSUPPORTED = "Формат %s не поддерживается.";
+    private final String MSG_STORAGE_LOAD = "Ошибка чтения данных из хранилища.";
+    private final String MSG_STORAGE_WRITE = "Ошибка записи данных в хранилище.";
+    private final String MSG_STORAGE_NOT_CREATE = "Не возможно создать директорию %s.";
+    private final String MSG_FORMAT_NOT_SUPPORTED = "Формат %s не поддерживается.";
 
     private final FileStorageType storageType;
 
@@ -34,7 +34,7 @@ public class FileStorage extends BaseStorage implements StorageClearable {
         File dir = new File(folder);
         if (!dir.exists())
             if (!dir.mkdir())
-                throw new GameException(String.format(MSG_STORAGENOTCREATE, folder));
+                throw new GameException(String.format(MSG_STORAGE_NOT_CREATE, folder));
     }
 
     @Override
@@ -51,8 +51,8 @@ public class FileStorage extends BaseStorage implements StorageClearable {
         String fileName = folder + "\\" + generation.getCurrentGeneration();
         try {
 
-            fileName += storageType.getExtention();
-            Writer writer = null;
+            fileName += storageType.getExtension();
+            Writer writer;
             switch (storageType) {
                 case TXT:
                     writer = new FileSaver(fileName);
@@ -62,31 +62,31 @@ public class FileStorage extends BaseStorage implements StorageClearable {
                 case XLSX:
                     writer = new XlsWriter(fileName);
                     break;
+                default:
+                    throw new GameException(String.format(MSG_FORMAT_NOT_SUPPORTED, storageType.getExtension()));
             }
-            if (writer == null)
-                throw new GameException(String.format(MSG_FORMATNOTSUPPORTED, storageType.getExtention()));
 
             GenerationWriter genWriter = new GenerationFileWriter(writer, new FileSaveFormatter());
             genWriter.write(generation);
         } catch (GameException e) {
-            throw new GameException(MSG_STORAGEWRITE, e);
+            throw new GameException(MSG_STORAGE_WRITE, e);
         }
     }
 
     private GenerationBroker load(String fileName) {
-        GenerationBroker result = null;
+        GenerationBroker result;
 
         try {
             Loader loader = null;
             if (FileUtils.isTxtFile(fileName)) loader = new FileLoader(fileName);
             else if (FileUtils.isXlsFile(fileName)) loader = new XlsLoader(fileName);
             if (loader == null)
-                throw new GameException(String.format(MSG_FORMATNOTSUPPORTED, storageType.getExtention()));
+                throw new GameException(String.format(MSG_FORMAT_NOT_SUPPORTED, storageType.getExtension()));
 
             GenerationLoader genLoader = new GenerationFileLoader(loader, new GenerationBaseParser());
             result = genLoader.load();
         } catch (GameException e) {
-            throw new GameException(MSG_STORAGELOAD, e);
+            throw new GameException(MSG_STORAGE_LOAD, e);
         }
         return result;
     }

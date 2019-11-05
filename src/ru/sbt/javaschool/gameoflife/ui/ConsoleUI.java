@@ -7,7 +7,6 @@ import ru.sbt.javaschool.gameoflife.creators.GameCreator;
 import ru.sbt.javaschool.gameoflife.creators.RandomCreator;
 import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
 
-import java.io.PrintStream;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -89,9 +88,8 @@ public class ConsoleUI implements UserInterface {
 
     @Override
     public GameCreator getCreator() {
+        if(input == null) return null;
         GameCreator creator = null;
-        if(input == null) return creator;
-
         int key = getKey();
         switch (key) {
             case KEY_FILE_CREATOR:

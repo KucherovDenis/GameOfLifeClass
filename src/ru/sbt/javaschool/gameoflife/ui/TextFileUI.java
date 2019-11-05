@@ -1,6 +1,5 @@
 package ru.sbt.javaschool.gameoflife.ui;
 
-import ru.sbt.javaschool.gameoflife.creators.GameCreator;
 import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
 import ru.sbt.javaschool.gameoflife.formatters.Formatter;
 

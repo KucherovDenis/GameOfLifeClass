@@ -1,7 +1,7 @@
 package ru.sbt.javaschool.gameoflife;
 
-import ru.sbt.javaschool.gameoflife.algoritms.Algoritm;
-import ru.sbt.javaschool.gameoflife.algoritms.BaseAlgoritm;
+import ru.sbt.javaschool.gameoflife.algoritms.Algorithm;
+import ru.sbt.javaschool.gameoflife.algoritms.BaseAlgorithm;
 import ru.sbt.javaschool.gameoflife.entities.GenerationEquals;
 import ru.sbt.javaschool.gameoflife.formatters.ConsoleFormatter;
 import ru.sbt.javaschool.gameoflife.formatters.FileFormatter;
@@ -61,7 +61,7 @@ public class Main {
     }
 
     private static Storage getStorage(List<String> args) {
-        Storage storage = null;
+        Storage storage;
         try {
             int index = args.indexOf("-s");
             if (index != -1) {
@@ -109,8 +109,8 @@ public class Main {
             }
 
             Storage storage = getStorage(argsList);
-            Algoritm algoritm = new BaseAlgoritm(storage);
-            Game game = new Game(view, algoritm);
+            Algorithm algorithm = new BaseAlgorithm(storage);
+            Game game = new Game(view, algorithm);
             game.run();
         }
     }
