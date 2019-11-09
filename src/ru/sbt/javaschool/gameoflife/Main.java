@@ -1,5 +1,6 @@
 package ru.sbt.javaschool.gameoflife;
 
+
 import ru.sbt.javaschool.gameoflife.algorithms.Algorithm;
 import ru.sbt.javaschool.gameoflife.algorithms.BaseAlgorithm;
 import ru.sbt.javaschool.gameoflife.entities.GenerationEquals;
@@ -12,6 +13,7 @@ import ru.sbt.javaschool.gameoflife.ui.TextFileUI;
 import ru.sbt.javaschool.gameoflife.ui.UserInterface;
 import ru.sbt.javaschool.gameoflife.ui.WindowUI;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,7 +26,7 @@ import java.util.List;
  * <p>Ключ <strong>-s [директория] [тип_вывода]</strong> задает хранилище поколений.
  * Допустимо задавать <strong>-s [директория]</strong>.<br\>
  * <strong>[директория]</strong> путь к директории хранилища. Если параметр не задан используется каталог <strong>Storage</strong>.<br\>
- * <strong>[тип_вывода]</strong> данные в хранилище сохраняются в <strong>txt, xls, xlsx</strong>.
+ * <strong>[тип_вывода]</strong> данные в хранилище сохраняются в <strong>txt, xls, xlsx, json</strong>.
  * Если парметр не задан используется java сериализация.</p>
  * <br\>
  * <p>Если ключ <strong>-w</strong> или <strong>-f</strong> не заданы данные выводятся на консоль.
@@ -91,12 +93,12 @@ public class Main {
         System.out.println("Ключ -s [директория] [тип_вывода] \tзадает хранилище поколений.\n" +
                 "Допустимо задавать -s [директория].");
         System.out.println("\t[директория] \tпуть к директории хранилища. Если параметр не задан используется каталог Storage.");
-        System.out.println("\t[тип_вывода] \tданные в хранилище сохраняются в txt, xls, xlsx. Если парметр не задан используется java сериализация.");
+        System.out.println("\t[тип_вывода] \tданные в хранилище сохраняются в txt, xls, xlsx, json. Если парметр не задан используется java сериализация.");
         System.out.println("Если ключ -w или -f не заданы данные выводятся на консоль.");
         System.out.println("Если ключ -s не задан в качестве хранилища используется оперативная память.");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         List<String> argsList = Arrays.asList(args);
         if (argsList.contains("-h")) showHelp();
         else {

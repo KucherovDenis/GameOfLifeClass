@@ -59,6 +59,9 @@ public class FileStorage extends BaseStorage implements StorageClearable {
                 case XLSX:
                     writer = new XlsWriter(fileName);
                     break;
+                case JSON:
+                    writer = new JsonWriter(fileName);
+                    break;
                 default:
                     //throw new GameException(String.format(MSG_FORMAT_NOT_SUPPORTED, storageType.getExtension()));
                     writer = null;
@@ -89,6 +92,7 @@ public class FileStorage extends BaseStorage implements StorageClearable {
             Loader loader = null;
             if (FileUtils.isTxtFile(fileName)) loader = new FileLoader(fileName);
             else if (FileUtils.isXlsFile(fileName)) loader = new XlsLoader(fileName);
+            else if (FileUtils.isJsonFile(fileName)) loader = new JsonLoader(fileName);
 
             GenerationLoader genLoader;
             if (loader != null) {

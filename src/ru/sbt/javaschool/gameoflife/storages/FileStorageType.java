@@ -1,7 +1,7 @@
 package ru.sbt.javaschool.gameoflife.storages;
 
 public enum FileStorageType {
-    NONE(".bin"), XLS(".xls"), XLSX(".xlsx"), TXT(".txt");
+    NONE(".bin"), XLS(".xls"), XLSX(".xlsx"), TXT(".txt"), JSON (".json");
     private final String extension;
 
     FileStorageType(String extension) {

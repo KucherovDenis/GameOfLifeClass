@@ -12,6 +12,7 @@ public class FileUtils {
     private static final String XLS_EXT = ".xls";
     private static final String XLS_EXT2 = ".xlsx";
     private static final String TXT_EXT = ".txt";
+    private static final String JSON_EXT = ".json";
 
     public static List<String> readFilesFromDirectory(String folderPath) {
         final File folder = new File(folderPath);
@@ -42,6 +43,10 @@ public class FileUtils {
 
     public static boolean isTxtFile(String filePath) {
         return isExtension(filePath, TXT_EXT);
+    }
+
+    public static boolean isJsonFile(String filePath) {
+        return  isExtension(filePath, JSON_EXT);
     }
 
     public static <T extends Serializable> void serialize(String fileName, T obj) {
