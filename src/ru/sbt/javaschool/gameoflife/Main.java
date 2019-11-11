@@ -76,7 +76,7 @@ public class Main {
                     sType = FileStorageType.valueOf(type.toUpperCase());
                 }
 
-                storage = new FileStorage(name, new GenerationEquals(), sType);
+                storage = new FileThreadStorage(name, new GenerationEquals(), sType);
                 ((StorageClearable) storage).clear();
             } else storage = new MemoryStorage(new GenerationEquals());
         } catch (GameException e) {
