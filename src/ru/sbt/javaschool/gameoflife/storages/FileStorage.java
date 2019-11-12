@@ -3,7 +3,6 @@ package ru.sbt.javaschool.gameoflife.storages;
 import ru.sbt.javaschool.gameoflife.GameException;
 import ru.sbt.javaschool.gameoflife.entities.Equals;
 import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
-import ru.sbt.javaschool.gameoflife.formatters.FileSaveFormatter;
 import ru.sbt.javaschool.gameoflife.io.*;
 import ru.sbt.javaschool.gameoflife.utils.FileUtils;
 
@@ -79,6 +78,7 @@ public class FileStorage extends BaseStorage implements StorageClearable {
 
     @Override
     public boolean contains(GenerationBroker generation) {
+        long start = System.nanoTime();
         boolean result = false;
         List<String> files = FileUtils.readFilesFromDirectory(folder);
 
@@ -89,7 +89,8 @@ public class FileStorage extends BaseStorage implements StorageClearable {
             if (result) break;
         }
 
-
+        long end = System.nanoTime();
+        System.out.println(end - start);
         return result;
     }
 }
