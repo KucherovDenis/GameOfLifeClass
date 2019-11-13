@@ -8,13 +8,13 @@ import ru.sbt.javaschool.gameoflife.utils.FileUtils;
 import java.util.List;
 import java.util.concurrent.*;
 
-public class FileThreadStorage extends FileStorage {
+public class FileThreadStorage extends FileStorage implements StorageCloseable {
 
     private ExecutorService threadPool;
     private ExecutorCompletionService<GenerationBroker> compService;
 
     private void init() {
-        threadPool = Executors.newCachedThreadPool();//Executors.newFixedThreadPool(10);
+        threadPool = Executors.newCachedThreadPool();
         compService = new ExecutorCompletionService<>(threadPool);
     }
 
@@ -36,7 +36,7 @@ public class FileThreadStorage extends FileStorage {
 
         for (int i = files.size() - 1; i >= 0; i--) {
             String fileName = files.get(i);
-            ThreadLoader job = new ThreadLoader(fileName);
+            TaskFileLoader job = new TaskFileLoader(fileName);
             compService.submit(job);
         }
 
@@ -57,5 +57,14 @@ public class FileThreadStorage extends FileStorage {
         }
 
         return result;
+    }
+
+    @Override
+    public void close() {
+        threadPool.shutdown();
+        try {
+            threadPool.awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+        }
     }
 }

@@ -31,4 +31,9 @@ public class MemoryStorage extends BaseStorage {
 
         return result;
     }
+
+    @Override
+    public void clear() {
+        generations.clear();
+    }
 }

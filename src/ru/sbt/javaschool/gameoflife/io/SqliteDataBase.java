@@ -2,14 +2,13 @@ package ru.sbt.javaschool.gameoflife.io;
 
 import ru.sbt.javaschool.gameoflife.GameException;
 
-import java.io.Closeable;
 import java.sql.*;
 
 public class SqliteDataBase implements DataBase {
 
     private final Connection connection;
 
-    private ResultSet selectResult = null;
+    private Statement selectQuery = null;
     private PreparedStatement insetQuery = null;
 
     public SqliteDataBase(String fileName) {
@@ -22,14 +21,37 @@ public class SqliteDataBase implements DataBase {
 
     @Override
     public void close() {
-        GameException gameException;
+        GameException gameException = null;
+        if (selectQuery != null)
+            try {
+                selectQuery.close();
+            } catch (SQLException e) {
+                gameException = new GameException(IOMessages.MSG_DATABASE_CLOSE_ERROR, e);
+            }
+
+        if (insetQuery != null)
+            try {
+                insetQuery.close();
+            } catch (SQLException e) {
+                if (gameException != null) {
+                    gameException.addSuppressed(e);
+                } else {
+                    gameException = new GameException(IOMessages.MSG_DATABASE_CLOSE_ERROR, e);
+                }
+            }
+
         try {
-            if (selectResult != null) selectResult.close();
-            if (insetQuery != null) insetQuery.close();
             connection.close();
         } catch (SQLException e) {
-            throw new GameException(IOMessages.MSG_DATABASE_CLOSE_ERROR, e);
+            if (gameException != null) {
+                gameException.addSuppressed(e);
+            } else {
+                gameException = new GameException(IOMessages.MSG_DATABASE_CLOSE_ERROR, e);
+            }
         }
+
+        if (gameException != null)
+            throw gameException;
     }
 
     @Override
@@ -50,11 +72,12 @@ public class SqliteDataBase implements DataBase {
     @Override
     public Loader getLoader() {
         Loader loader = null;
-        CloseResourse(selectResult);
+        CloseResourse(selectQuery);
 
         String sql = "SELECT generation FROM Generations ORDER BY id DESC";
-        try (Statement statement = connection.createStatement();) {
-            selectResult = statement.executeQuery(sql);
+        try {
+            selectQuery = connection.createStatement();
+            ResultSet selectResult = selectQuery.executeQuery(sql);
             loader = new DataBaseReader(selectResult);
         } catch (SQLException e) {
             throw new GameException(IOMessages.MSG_DATABASE_ACCESS_ERROR, e);

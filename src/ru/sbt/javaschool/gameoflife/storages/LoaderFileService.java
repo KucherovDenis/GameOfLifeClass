@@ -4,7 +4,7 @@ import ru.sbt.javaschool.gameoflife.io.*;
 import ru.sbt.javaschool.gameoflife.parsers.GenerationBaseParser;
 import ru.sbt.javaschool.gameoflife.utils.FileUtils;
 
-class LoaderService {
+class LoaderFileService {
     public static GenerationLoader getLoader(String fileName) {
         GenerationLoader result;
         Loader loader = null;

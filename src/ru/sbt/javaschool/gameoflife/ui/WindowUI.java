@@ -41,7 +41,7 @@ public class WindowUI implements UserInterface {
     private Generation currentGeneration = null;
 
     private final Canvas canvasPanel;
-    private boolean isStop = false;
+    private volatile boolean isStop = false;
 
     public WindowUI() {
         frame = new JFrame(GAME_TITLE);
@@ -144,6 +144,11 @@ public class WindowUI implements UserInterface {
         canvasPanel.repaint();
     }
 
+    private void dispose() {
+        frame.setVisible(false);
+        frame.dispose();
+    }
+
     @Override
     public void close() {
         JOptionPane.showMessageDialog(frame,
@@ -151,7 +156,7 @@ public class WindowUI implements UserInterface {
                 ENDING_DIALOG_TITLE,
                 JOptionPane.INFORMATION_MESSAGE);
 
-        System.exit(0);
+        dispose();
     }
 
     @Override
@@ -161,7 +166,7 @@ public class WindowUI implements UserInterface {
                 ERROR_DIALOG_TITLE,
                 JOptionPane.ERROR_MESSAGE);
 
-        System.exit(-1);
+        dispose();
     }
 
     @Override

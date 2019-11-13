@@ -10,7 +10,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
-public class FileStorage extends BaseStorage implements StorageClearable {
+public class FileStorage extends BaseStorage {
 
     public String getFolder() {
         return folder;
@@ -51,7 +51,7 @@ public class FileStorage extends BaseStorage implements StorageClearable {
     private void write(String filePath, GenerationBroker generation) {
         try {
             final String fileName = filePath + storageType.getExtension();
-            GenerationWriter genWriter = WriterService.getWriter(fileName);
+            GenerationWriter genWriter = WriterFileService.getWriter(fileName);
             genWriter.write(generation);
         } catch (GameException e) {
             throw new GameException(MSG_STORAGE_WRITE, e);
@@ -68,7 +68,7 @@ public class FileStorage extends BaseStorage implements StorageClearable {
         GenerationBroker result;
 
         try {
-            GenerationLoader genLoader = LoaderService.getLoader(fileName);
+            GenerationLoader genLoader = LoaderFileService.getLoader(fileName);
             result = genLoader.load();
         } catch (GameException e) {
             throw new GameException(MSG_STORAGE_LOAD, e);

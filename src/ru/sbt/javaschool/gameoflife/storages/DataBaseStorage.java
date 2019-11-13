@@ -2,13 +2,11 @@ package ru.sbt.javaschool.gameoflife.storages;
 
 import ru.sbt.javaschool.gameoflife.entities.Equals;
 import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
-import ru.sbt.javaschool.gameoflife.formatters.FileFormatter;
+import ru.sbt.javaschool.gameoflife.formatters.FileSaveFormatter;
 import ru.sbt.javaschool.gameoflife.io.*;
 import ru.sbt.javaschool.gameoflife.parsers.GenerationDataBaseParser;
 
-import java.io.Closeable;
-
-public class DataBaseStorage extends BaseStorage implements StorageClearable, Closeable {
+public class DataBaseStorage extends BaseStorage implements StorageCloseable {
 
     private final DataBase dataBase;
 
@@ -19,7 +17,7 @@ public class DataBaseStorage extends BaseStorage implements StorageClearable, Cl
 
     @Override
     public void add(GenerationBroker generation) {
-        GenerationWriter writer = new GenerationBaseWriter(dataBase.getWriter(), new FileFormatter());
+        GenerationWriter writer = new GenerationBaseWriter(dataBase.getWriter(), new FileSaveFormatter());
         writer.write(generation);
     }
 

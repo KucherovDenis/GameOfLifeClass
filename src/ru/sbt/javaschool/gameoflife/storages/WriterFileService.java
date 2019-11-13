@@ -4,7 +4,7 @@ import ru.sbt.javaschool.gameoflife.formatters.FileSaveFormatter;
 import ru.sbt.javaschool.gameoflife.io.*;
 import ru.sbt.javaschool.gameoflife.utils.FileUtils;
 
-class WriterService {
+class WriterFileService {
     public static GenerationWriter getWriter(String fileName) {
         GenerationWriter result;
         Writer writer = null;

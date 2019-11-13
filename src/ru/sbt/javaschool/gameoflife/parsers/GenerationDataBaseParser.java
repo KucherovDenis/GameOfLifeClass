@@ -10,12 +10,14 @@ public class GenerationDataBaseParser extends GenerationBaseParser {
     private static final String NEW_LINE = "\n";
 
     private List<String> prepare(String str) {
-       return Arrays.asList(str.split(NEW_LINE));
+        String[] strings = str.split(NEW_LINE);
+       return Arrays.asList(strings);
     }
 
     @Override
     public GenerationBroker parsing(List<String> strings) {
         if (strings == null || strings.size() == 0) return null;
-        return super.parsing(prepare(strings.get(0)));
+        List<String> stringList = prepare(strings.get(0));
+        return super.parsing(stringList);
     }
 }
