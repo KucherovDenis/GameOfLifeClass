@@ -5,12 +5,12 @@ import ru.sbt.javaschool.gameoflife.formatters.Formatter;
 
 import java.util.Objects;
 
-public class GenerationFileWriter implements GenerationWriter {
+public class GenerationBaseWriter implements GenerationWriter {
 
     private final Writer writer;
     private final Formatter formatter;
 
-    public GenerationFileWriter(Writer writer, Formatter formatter) {
+    public GenerationBaseWriter(Writer writer, Formatter formatter) {
         this.writer = Objects.requireNonNull(writer);
         this.formatter = Objects.requireNonNull(formatter);
     }

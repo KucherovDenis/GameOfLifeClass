@@ -5,7 +5,7 @@ import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
 
 import java.util.Objects;
 
-public abstract class BaseStorage {
+public abstract class BaseStorage implements Storage {
 
     private final Equals<GenerationBroker> equalsImpl;
 

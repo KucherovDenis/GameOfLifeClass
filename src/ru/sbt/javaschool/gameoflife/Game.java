@@ -47,7 +47,6 @@ public class Game {
         } catch (GameException e) {
             showError(e);
         } catch (InterruptedException e) {
-            view.showErrorMessage(e.getMessage());
         }
         endGame();
     }

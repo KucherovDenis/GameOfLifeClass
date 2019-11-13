@@ -2,7 +2,7 @@ package ru.sbt.javaschool.gameoflife.creators;
 
 import ru.sbt.javaschool.gameoflife.GameException;
 import ru.sbt.javaschool.gameoflife.io.FileLoader;
-import ru.sbt.javaschool.gameoflife.io.GenerationFileLoader;
+import ru.sbt.javaschool.gameoflife.io.GenerationBaseLoader;
 import ru.sbt.javaschool.gameoflife.io.GenerationLoader;
 import ru.sbt.javaschool.gameoflife.io.XlsLoader;
 import ru.sbt.javaschool.gameoflife.parsers.GenerationBaseParser;
@@ -18,9 +18,9 @@ public class FileCreator implements GameCreator {
 
     public FileCreator(String fileName) {
         if (FileUtils.isTxtFile(fileName)) {
-            loader = new GenerationFileLoader(new FileLoader(fileName), new GenerationBaseParser());
+            loader = new GenerationBaseLoader(new FileLoader(fileName), new GenerationBaseParser());
         } else if (FileUtils.isXlsFile(fileName)) {
-            loader = new GenerationFileLoader(new XlsLoader(fileName), new GenerationBaseParser());
+            loader = new GenerationBaseLoader(new XlsLoader(fileName), new GenerationBaseParser());
         } else throw new GameException(MSG_GAME_NOT_CREATE + "\n" + MSG_FILE_NOT_SUPPORTED);
     }
 

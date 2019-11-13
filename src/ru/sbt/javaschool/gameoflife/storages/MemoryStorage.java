@@ -6,7 +6,7 @@ import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemoryStorage extends BaseStorage implements Storage {
+public class MemoryStorage extends BaseStorage {
 
     private final List<GenerationBroker> generations;
 

@@ -14,7 +14,6 @@ import ru.sbt.javaschool.gameoflife.ui.UserInterface;
 import ru.sbt.javaschool.gameoflife.ui.WindowUI;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -99,7 +98,7 @@ public class Main {
         System.out.println("Если ключ -s не задан в качестве хранилища используется оперативная память.");
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         List<String> argsList = Arrays.asList(args);
         Storage storage = null;
         if (argsList.contains("-h")) showHelp();
@@ -112,7 +111,7 @@ public class Main {
                 return;
             }
 
-             storage = getStorage(argsList);
+            storage = getStorage(argsList);
             Algorithm algorithm = new BaseAlgorithm(storage);
             Game game = new Game(view, algorithm);
             game.run();

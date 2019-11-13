@@ -13,7 +13,7 @@ class WriterService {
         else if (FileUtils.isJsonFile(fileName)) writer = new JsonWriter(fileName);
 
         if (writer != null) {
-            result = new GenerationFileWriter(writer, new FileSaveFormatter());
+            result = new GenerationBaseWriter(writer, new FileSaveFormatter());
         } else {
             result = new GenerationSerializer(fileName);
         }

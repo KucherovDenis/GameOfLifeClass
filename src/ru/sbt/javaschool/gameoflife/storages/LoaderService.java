@@ -13,7 +13,7 @@ class LoaderService {
         else if (FileUtils.isJsonFile(fileName)) loader = new JsonLoader(fileName);
 
         if (loader != null) {
-            result = new GenerationFileLoader(loader, new GenerationBaseParser());
+            result = new GenerationBaseLoader(loader, new GenerationBaseParser());
         } else {
             result = new GenerationDeserializer(fileName);
         }
