@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GameSettings {
 
-    private List<String> args;
+    private final List<String> args;
 
     public GameSettings(String[] args) {
         this.args = Arrays.asList(args);

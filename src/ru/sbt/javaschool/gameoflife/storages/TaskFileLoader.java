@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
 
 class TaskFileLoader implements Callable<GenerationBroker> {
 
-    private GenerationLoader genLoader;
+    private final GenerationLoader genLoader;
 
 
     public TaskFileLoader(String fileName) {

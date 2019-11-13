@@ -81,7 +81,7 @@ public class ConsoleUI implements UserInterface {
     }
 
     private FieldSize getFieldSize() {
-        System.out.println(String.format(MSG_INPUT_FIELD_SIZE, FieldSize.format()));
+        System.out.println(String.format(MSG_INPUT_FIELD_SIZE, FieldSize.SIZE_FORMAT));
         String val = readInputString();
         return FieldSize.get(val);
     }

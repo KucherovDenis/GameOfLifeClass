@@ -47,7 +47,5 @@ public class FieldSize {
         return fieldSize;
     }
 
-    public static String format() {
-        return "{Число:2}*{Число:2}";
-    }
+    public static final String SIZE_FORMAT = "{Число:2}*{Число:2}";
 }

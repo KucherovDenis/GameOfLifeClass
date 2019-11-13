@@ -3,7 +3,6 @@ package ru.sbt.javaschool.gameoflife.io;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.sbt.javaschool.gameoflife.GameException;
 import ru.sbt.javaschool.gameoflife.formatters.Splitter;
 

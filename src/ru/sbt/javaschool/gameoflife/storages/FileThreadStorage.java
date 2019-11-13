@@ -41,7 +41,7 @@ public class FileThreadStorage extends FileStorage implements StorageCloseable {
         }
 
         for (int i = files.size() - 1; i >= 0; i--) {
-            GenerationBroker current = null;
+            GenerationBroker current;
             try {
                 Future<GenerationBroker> future = compService.take();
                 current = future.get();

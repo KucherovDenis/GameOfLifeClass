@@ -71,7 +71,7 @@ public class SqliteDataBase implements DataBase {
 
     @Override
     public Loader getLoader() {
-        Loader loader = null;
+        Loader loader;
         CloseResourse(selectQuery);
 
         String sql = "SELECT generation FROM Generations ORDER BY id DESC";
@@ -96,7 +96,7 @@ public class SqliteDataBase implements DataBase {
 
     @Override
     public Writer getWriter() {
-        Writer writer = null;
+        Writer writer;
 
         CloseResourse(insetQuery);
 
