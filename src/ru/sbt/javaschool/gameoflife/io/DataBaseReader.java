@@ -24,7 +24,7 @@ public class DataBaseReader implements Loader {
                 byte[] data = resultSet.getBytes(1);
                 String dataStr = new String(data);
                 result.add(dataStr);
-            }
+            } else resultSet.close();
 
         } catch (SQLException e) {
             throw new GameException(IOMessages.MSG_DATABASE_READ_ERROR, e);
