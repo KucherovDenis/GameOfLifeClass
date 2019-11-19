@@ -7,11 +7,11 @@ import ru.sbt.javaschool.gameoflife.entities.GenerationBroker;
 public class BaseFormatter implements Formatter {
 
     private static final String EMPTY_STR = "";
-    protected static final String NEW_LINE = "\n";
+    static final String NEW_LINE = "\n";
 
-    protected String SEPARATOR;
-    protected String STR_ALIVE;
-    protected String STR_DEAD;
+    String SEPARATOR;
+    String STR_ALIVE;
+    String STR_DEAD;
 
     public BaseFormatter() {
         SEPARATOR = EMPTY_STR;

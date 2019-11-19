@@ -1,5 +1,7 @@
 package ru.sbt.javaschool.gameoflife;
 
+import ru.sbt.javaschool.gameoflife.algorithms.Algorithm;
+import ru.sbt.javaschool.gameoflife.algorithms.BaseAlgorithm;
 import ru.sbt.javaschool.gameoflife.entities.GenerationEquals;
 import ru.sbt.javaschool.gameoflife.formatters.ConsoleFormatter;
 import ru.sbt.javaschool.gameoflife.formatters.FileFormatter;
@@ -14,12 +16,27 @@ import ru.sbt.javaschool.gameoflife.ui.WindowUI;
 import java.util.Arrays;
 import java.util.List;
 
-public class GameSettings {
+public final class GameSettings implements Settings {
 
     private final List<String> args;
 
-    public GameSettings(String[] args) {
+    private Storage storage;
+    private UserInterface ui;
+
+    private static GameSettings instance;
+
+    private GameSettings(String[] args) {
         this.args = Arrays.asList(args);
+        storage = createStorage();
+        ui = createUserInterface();
+    }
+
+    public static GameSettings getInstance(String[] args) {
+        if(instance == null) {
+            instance = new GameSettings(args);
+        }
+
+        return instance;
     }
 
     private String getValue(int index) {
@@ -31,11 +48,11 @@ public class GameSettings {
         return result;
     }
 
-    private UserInterface getWindowUI() {
+    private UserInterface createWindowUI() {
         return new WindowUI();
     }
 
-    private UserInterface getFileUI() {
+    private UserInterface createFileUI() {
         UserInterface view;
         Formatter formatter = new FileFormatter();
         int index = args.indexOf("-f");
@@ -45,34 +62,35 @@ public class GameSettings {
         return view;
     }
 
-    private UserInterface getConsoleUI() {
+    private UserInterface createConsoleUI() {
         Formatter formatter = new ConsoleFormatter();
         return new ConsoleUI(formatter);
     }
 
-    public UserInterface getUserInterface() {
+    private UserInterface createUserInterface() {
         UserInterface view;
 
         if (args.contains("-w")) {
-            view = getWindowUI();
+            view = createWindowUI();
         } else if (args.contains("-f")) {
-            view = getFileUI();
+            view = createFileUI();
         } else {
-            view = getConsoleUI();
+            view = createConsoleUI();
         }
 
         return view;
     }
 
+    @Override
     public boolean isHelp() {
         return args.contains("-h");
     }
 
-    private Storage getMemoryStorage() {
+    private Storage createMemoryStorage() {
         return new MemoryStorage(new GenerationEquals());
     }
 
-    private static String getName(String value) {
+    private String getName(String value) {
         String tmpValue = value.toLowerCase();
         if (!"\\t".equals(tmpValue) &&
                 !"json".equals(tmpValue) &&
@@ -83,7 +101,7 @@ public class GameSettings {
         } else return null;
     }
 
-    private static FileStorageType getType(String value) {
+    private FileStorageType getType(String value) {
         value = value.toUpperCase();
         FileStorageType type = null;
         switch (value) {
@@ -96,7 +114,7 @@ public class GameSettings {
         return type;
     }
 
-    private Storage getFileStorage() {
+    private Storage createFileStorage() {
         Storage storage = null;
         int index = args.indexOf("-sf");
         if (index != -1) {
@@ -123,7 +141,7 @@ public class GameSettings {
         return storage;
     }
 
-    private Storage getDataBaseStorage() {
+    private Storage createDataBaseStorage() {
         Storage storage = null;
         int index = args.indexOf("-sd");
         if (index != -1) {
@@ -136,19 +154,34 @@ public class GameSettings {
         return storage;
     }
 
-    public Storage getStorage() {
+    private Storage createStorage() {
         Storage storage;
         if (args.contains("-sf")) {
-            storage = getFileStorage();
+            storage = createFileStorage();
         } else if (args.contains("-sd")) {
-            storage = getDataBaseStorage();
+            storage = createDataBaseStorage();
         } else {
-            storage = getMemoryStorage();
+            storage = createMemoryStorage();
         }
 
         if (storage == null)
-            storage = getMemoryStorage();
+            storage = createMemoryStorage();
         storage.clear();
         return storage;
+    }
+
+    @Override
+    public Storage getStorage() {
+        return storage;
+    }
+
+    @Override
+    public UserInterface getUserInterface() {
+        return ui;
+    }
+
+    @Override
+    public Algorithm getAlgorithm(Storage storage) {
+        return new BaseAlgorithm(storage);
     }
 }

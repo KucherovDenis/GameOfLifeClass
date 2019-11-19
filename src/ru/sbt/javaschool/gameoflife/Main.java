@@ -44,7 +44,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        GameSettings settings = new GameSettings(args);
+        Settings settings = GameSettings.getInstance(args);
         if (settings.isHelp()) showHelp();
         else {
             UserInterface view;
@@ -52,13 +52,12 @@ public class Main {
             try {
                 view = settings.getUserInterface();
                 storage = settings.getStorage();
-                storage.clear();
             } catch (GameException e) {
                 System.out.println(e.getMessage());
                 return;
             }
 
-            Algorithm algorithm = new BaseAlgorithm(storage);
+            Algorithm algorithm = settings.getAlgorithm(storage);
             Game game = new Game(view, algorithm);
             game.run();
 
