@@ -2,7 +2,6 @@ package ru.sbt.javaschool.gameoflife;
 
 
 import ru.sbt.javaschool.gameoflife.algorithms.Algorithm;
-import ru.sbt.javaschool.gameoflife.algorithms.BaseAlgorithm;
 import ru.sbt.javaschool.gameoflife.storages.Storage;
 import ru.sbt.javaschool.gameoflife.storages.StorageCloseable;
 import ru.sbt.javaschool.gameoflife.ui.UserInterface;

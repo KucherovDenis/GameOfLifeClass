@@ -43,8 +43,8 @@ public class GenerationBaseParser implements Parser {
 
         Generation generation = createGeneration(strings.get(0));
         if (generation != null)
-            for (int x = 0; x < strings.size() - 1; x++) {
-                String line = strings.get(x + 1);
+            for (int x = 1; x < strings.size() - 1; x++) {
+                String line = strings.get(x);
                 if (line != null)
                     parsingLine(line, x, generation);
             }
