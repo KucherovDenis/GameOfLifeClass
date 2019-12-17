@@ -14,9 +14,17 @@ public class BaseAlgorithm implements Algorithm {
 
     private GenerationBroker nextGen = null;
 
-    private final Storage storage;
+    private Storage storage = null;
 
     public BaseAlgorithm(Storage storage) {
+        this.storage = storage;
+    }
+
+    public BaseAlgorithm() {
+
+    }
+
+    public void addStorage(Storage storage) {
         this.storage = storage;
     }
 

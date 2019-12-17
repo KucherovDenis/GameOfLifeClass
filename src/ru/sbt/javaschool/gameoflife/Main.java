@@ -8,6 +8,8 @@ import ru.sbt.javaschool.gameoflife.ui.UserInterface;
 
 
 /**
+ * <p>Ключ <strong>-p [имя_файла]</strong> считывает настройки из файла конфигурации.</p>
+ * <br\>
  * <p>Ключ <strong>-w</strong> данные выводятся в графическом окне.</p>
  * <br\>
  * <p>Ключ <strong>-f [имя_файла]</strong> данные выводятся в текстовый файл.<br\>
@@ -20,8 +22,8 @@ import ru.sbt.javaschool.gameoflife.ui.UserInterface;
  * Если парметр не задан используется java сериализация.
  * <strong>[\t]</strong> файлы будут читаться в отдельных потоках. Необязательный параметр.</p>
  * <br\>
- *  <p>Ключ <strong>-sd [имя_файла]</strong> задает хранилище поколений в базе данных.
- *  <strong>[имя_файла]</strong> файл базы данных. Обязательный параметр.</p>
+ * <p>Ключ <strong>-sd [имя_файла]</strong> задает хранилище поколений в базе данных.
+ * <strong>[имя_файла]</strong> файл базы данных. Обязательный параметр.</p>
  * <br\>
  * <p>Если ключ <strong>-w</strong> или <strong>-f</strong> не заданы данные выводятся на консоль.
  * Если ключи <strong>-sf</strong>,<strong>-sd</strong> не заданы в качестве хранилища используется оперативная память.</p>
@@ -42,19 +44,31 @@ public class Main {
         System.out.println("Если ключи -sf, -sd не заданы в качестве хранилища используется оперативная память.");
     }
 
-    public static void main(String[] args) {
-        Settings settings = GameSettings.getInstance(args);
-        if (settings.isHelp()) showHelp();
-        else {
-            UserInterface view;
-            Storage storage;
+    private static Settings getSettings(String[] args) {
+        Settings settings = null;
+        if (args.length > 0) {
             try {
-                view = settings.getUserInterface();
-                storage = settings.getStorage();
+                if ("-p".equals(args[0]) && args.length >= 2) {
+                    settings = new FileGameSettings(args[1]);
+                } else {
+                    settings = ConsoleGameSettings.getInstance(args);
+                }
             } catch (GameException e) {
                 System.out.println(e.getMessage());
-                return;
             }
+        }
+
+        return settings;
+    }
+
+    public static void main(String[] args) {
+        Settings settings = getSettings(args);
+        if(settings == null) return;
+
+        if (settings.isHelp()) showHelp();
+        else {
+            UserInterface view = settings.getUserInterface();
+            Storage storage = settings.getStorage();
 
             Algorithm algorithm = settings.getAlgorithm(storage);
             Game game = new Game(view, algorithm);

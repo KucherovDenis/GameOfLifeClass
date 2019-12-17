@@ -16,24 +16,24 @@ import ru.sbt.javaschool.gameoflife.ui.WindowUI;
 import java.util.Arrays;
 import java.util.List;
 
-public final class GameSettings implements Settings {
+public final class ConsoleGameSettings implements Settings {
 
     private final List<String> args;
 
     private Storage storage;
     private UserInterface ui;
 
-    private static GameSettings instance;
+    private static ConsoleGameSettings instance;
 
-    private GameSettings(String[] args) {
+    private ConsoleGameSettings(String[] args) {
         this.args = Arrays.asList(args);
         storage = createStorage();
         ui = createUserInterface();
     }
 
-    public static GameSettings getInstance(String[] args) {
+    public static ConsoleGameSettings getInstance(String[] args) {
         if(instance == null) {
-            instance = new GameSettings(args);
+            instance = new ConsoleGameSettings(args);
         }
 
         return instance;
@@ -102,16 +102,7 @@ public final class GameSettings implements Settings {
     }
 
     private FileStorageType getType(String value) {
-        value = value.toUpperCase();
-        FileStorageType type = null;
-        switch (value) {
-            case "JSON":
-            case "TXT":
-            case "XLS":
-            case "XLSX":
-                type = FileStorageType.valueOf(value);
-        }
-        return type;
+        return FileStorageType.getOf(value);
     }
 
     private Storage createFileStorage() {
@@ -130,7 +121,6 @@ public final class GameSettings implements Settings {
             }
 
             if (name == null) name = "Storage";
-            if (type == null) type = FileStorageType.NONE;
             if (isThread) {
                 storage = new FileThreadStorage(name, new GenerationEquals(), type);
             } else {
